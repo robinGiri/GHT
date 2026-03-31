@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import ShopHeader from "../components/ShopHeader";
+import SiteFooter from "../components/SiteFooter";
 
 export default function OrderSuccess() {
   const [searchParams] = useSearchParams();
@@ -66,6 +67,7 @@ export default function OrderSuccess() {
           <Link className="button button-secondary" to="/shop">Back to Shop</Link>
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 }

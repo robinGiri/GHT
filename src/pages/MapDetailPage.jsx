@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import ShopHeader from "../components/ShopHeader";
+import SiteFooter from "../components/SiteFooter";
 import { useCart } from "../context/CartContext";
 import { getProductById } from "../data/products";
 
@@ -115,6 +116,7 @@ export default function MapDetailPage() {
           </div>
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 }

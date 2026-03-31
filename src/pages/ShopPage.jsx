@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ShopHeader from "../components/ShopHeader";
+import SiteFooter from "../components/SiteFooter";
 import MapProductCard from "../components/MapProductCard";
 import BookCard from "../components/BookCard";
 import { useCart } from "../context/CartContext";
@@ -189,19 +190,7 @@ export default function ShopPage() {
         </div>
       </main>
 
-      <footer className="shop-footer">
-        <div className="container shop-footer-inner">
-          <div className="footer-brand">
-            <strong>Great Himalaya Trail</strong>
-            <span>Nepal</span>
-          </div>
-          <nav className="footer-nav" aria-label="Footer">
-            <Link to="/">Home</Link>
-            <Link to="/shop">Shop</Link>
-          </nav>
-          <p className="footer-copy">1,700 km across the roofline of Nepal.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

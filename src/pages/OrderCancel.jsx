@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import ShopHeader from "../components/ShopHeader";
+import SiteFooter from "../components/SiteFooter";
 
 export default function OrderCancel() {
   return (
@@ -16,6 +17,7 @@ export default function OrderCancel() {
           </div>
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 }
