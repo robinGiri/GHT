@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Vite
+.vite/
+
+# Python
+venv/
+.venv/
+**/__pycache__/
+*.py[cod]
+*.pyo
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment
+backend/.env
+.env
+.env.local
+.env.*.local
+
+# Playwright
+test-results/
+playwright-report/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+.idea/

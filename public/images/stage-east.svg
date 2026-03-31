@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="Eastern approach">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2d2a1"/>
+      <stop offset="1" stop-color="#4e7e8f"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="220" fill="url(#g1)"/>
+  <path d="M0 170 L70 120 L110 140 L170 85 L220 120 L280 70 L320 130 L320 220 L0 220 Z" fill="#1c3845" opacity=".68"/>
+  <path d="M0 195 L95 145 L140 162 L205 115 L255 140 L320 100 L320 220 L0 220 Z" fill="#f8ecdb" opacity=".42"/>
+</svg>
