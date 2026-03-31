@@ -194,16 +194,6 @@
   font-weight: 700;
 }
 
-/* ── Shop Header (sticky) ──────────────────────────── */
-.site-header.shop-header {
-  z-index: 200;
-}
-/* On desktop, CartIcon lives inside header-row (display:contents).
-   Push it after the site-nav so order is: brand | nav | cart */
-.shop-header .cart-icon-btn {
-  order: 99;
-}
-
 /* ── Layout Utility ────────────────────────────────── */
 .container {
   max-width: 1200px;
@@ -702,11 +692,6 @@
 .checkout-result-inner .button { margin: 0.5rem; }
 
 /* ── Nav Shop link ─────────────────────────────────── */
-nav.site-nav .nav-shop-link {
-  color: var(--green) !important;
-  font-weight: 700;
-}
-
 /* ── Admin Layout ──────────────────────────────────── */
 .admin-layout {
   display: flex;

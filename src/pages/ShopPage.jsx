@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import ShopHeader from "../components/ShopHeader";
+import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import MapProductCard from "../components/MapProductCard";
 import BookCard from "../components/BookCard";
@@ -40,7 +40,7 @@ export default function ShopPage() {
 
   return (
     <div className="page-shell">
-      <ShopHeader />
+      <SiteHeader />
 
       <main className="shop-main">
         <section className="shop-hero">
@@ -52,6 +52,8 @@ export default function ShopPage() {
             </p>
           </div>
         </section>
+
+        <div className="prayer-flags" aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /><span /><span /><span /></div>
 
         {/* Tab navigation */}
         <div className="shop-tabs-bar">
@@ -190,6 +192,7 @@ export default function ShopPage() {
         </div>
       </main>
 
+      <div className="lotus-divider" aria-hidden="true"><div className="lotus-divider-icon" /></div>
       <SiteFooter />
     </div>
   );

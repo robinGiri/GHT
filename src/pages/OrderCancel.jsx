@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import ShopHeader from "../components/ShopHeader";
+import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 
 export default function OrderCancel() {
   return (
     <div className="page-shell">
-      <ShopHeader />
+      <SiteHeader />
       <main className="checkout-result-main">
         <div className="container checkout-result-inner">
           <div className="checkout-result-icon checkout-result-icon--cancel" aria-hidden="true">✕</div>

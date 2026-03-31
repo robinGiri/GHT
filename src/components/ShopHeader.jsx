@@ -34,6 +34,9 @@ export default function ShopHeader() {
           onClick={() => setNavOpen(false)}
         >
           <Link to="/">Home</Link>
+          <Link to="/journeys">Journeys</Link>
+          <Link to="/plan">Plan</Link>
+          <Link to="/culture">Culture</Link>
           <Link to="/shop" className="nav-shop-link">Shop</Link>
         </nav>
       </header>

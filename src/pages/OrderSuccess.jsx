@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import ShopHeader from "../components/ShopHeader";
+import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 
 export default function OrderSuccess() {
@@ -20,7 +20,7 @@ export default function OrderSuccess() {
 
   return (
     <div className="page-shell">
-      <ShopHeader />
+      <SiteHeader />
       <main className="checkout-result-main">
         <div className="container checkout-result-inner">
           <div className="checkout-result-icon checkout-result-icon--success" aria-hidden="true">✓</div>

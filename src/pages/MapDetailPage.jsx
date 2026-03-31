@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import ShopHeader from "../components/ShopHeader";
+import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import { useCart } from "../context/CartContext";
 import { getProductById } from "../data/products";
@@ -12,7 +12,7 @@ export default function MapDetailPage() {
   if (!product) {
     return (
       <div className="page-shell">
-        <ShopHeader />
+        <SiteHeader />
         <main className="container" style={{ padding: "4rem 0", textAlign: "center" }}>
           <p className="eyebrow">404</p>
           <h1>Map not found</h1>
@@ -24,7 +24,7 @@ export default function MapDetailPage() {
 
   return (
     <div className="page-shell">
-      <ShopHeader />
+      <SiteHeader />
       <main className="map-detail-main">
         <div className="container map-detail-inner">
           {/* Breadcrumb */}
