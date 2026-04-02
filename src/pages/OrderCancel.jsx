@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import Breadcrumb from "../components/Breadcrumb";
+import { Lotus } from "../components/NepaliIcons";
 
 export default function OrderCancel() {
   return (
@@ -19,6 +20,7 @@ export default function OrderCancel() {
           </div>
         </div>
       </main>
+      <div className="lotus-divider" aria-hidden="true"><Lotus size={56} /></div>
       <SiteFooter />
     </div>
   );

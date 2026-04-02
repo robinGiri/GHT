@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import { Mandala, Lotus, Stupa, EndlessKnot, Dorje, MountainRange } from "../components/NepaliIcons";
 
 const beltZones = [
   {
@@ -9,6 +10,7 @@ const beltZones = [
     region: "Pakistan / Karakoram",
     country: "Pakistan",
     anchor: "Nanga Parbat · 8,126 m",
+    image: "/images/belt-pakistan.jpg",
     elevation: "8,611 m (K2)",
     kmShare: 8,
     access: "Open",
@@ -23,6 +25,7 @@ const beltZones = [
     region: "India West / Ladakh",
     country: "India",
     anchor: "Stok Kangri · 6,153 m",
+    image: "/images/belt-ladakh.jpg",
     elevation: "6,153 m",
     kmShare: 6,
     access: "Inner Line Permit",
@@ -37,6 +40,7 @@ const beltZones = [
     region: "Nepal",
     country: "Nepal",
     anchor: "Kanchenjunga · 8,586 m",
+    image: "/images/belt-nepal.jpg",
     elevation: "8,849 m (Everest)",
     kmShare: 20,
     access: "TIMS + Permits",
@@ -51,6 +55,7 @@ const beltZones = [
     region: "India East / Sikkim",
     country: "India",
     anchor: "Kanchenjunga SW · 8,586 m",
+    image: "/images/belt-sikkim.jpg",
     elevation: "8,586 m",
     kmShare: 4,
     access: "Protected Area Permit",
@@ -65,6 +70,7 @@ const beltZones = [
     region: "Bhutan",
     country: "Bhutan",
     anchor: "Gangkhar Puensum · 7,570 m",
+    image: "/images/belt-bhutan.jpg",
     elevation: "7,570 m",
     kmShare: 7,
     access: "Guided + Govt Fee",
@@ -79,6 +85,7 @@ const beltZones = [
     region: "Tibet / Eastern Anchor",
     country: "China (Tibet)",
     anchor: "Namche Barwa · 7,782 m",
+    image: "/images/belt-tibet.jpg",
     elevation: "7,782 m",
     kmShare: 5,
     access: "Restricted",
@@ -119,8 +126,11 @@ function HomePage() {
       <SiteHeader />
 
       <main id="main-content">
-        <section className="hero">
-          <div className="hero-copy reveal">
+        <section className="page-hero home-hero">
+          <div className="page-hero-img" aria-hidden="true">
+            <img src="/images/hero-sunset.jpg" alt="" />
+          </div>
+          <div className="page-hero-inner hero-copy reveal">
             <p className="eyebrow">High routes. Deep valleys. Human scale wonder.</p>
             <h1>The roofline of Nepal, translated into a modern journey.</h1>
             <p className="hero-text">
@@ -151,61 +161,6 @@ function HomePage() {
               </li>
             </ul>
           </div>
-
-          <div className="hero-visual reveal">
-            {/* Dhamma wheel — 8-spoke Buddhist wheel of dharma, no Om */}
-            <svg
-              className="dhamma-wheel"
-              viewBox="0 0 100 100"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" strokeWidth="2.5" />
-              <circle cx="50" cy="50" r="8" fill="none" stroke="currentColor" strokeWidth="2.5" />
-              <circle cx="50" cy="50" r="36" fill="none" stroke="currentColor" strokeWidth="1.2" />
-              {/* 8 spokes */}
-              {[0,45,90,135,180,225,270,315].map((deg) => {
-                const rad = (deg * Math.PI) / 180;
-                const x1 = 50 + 8 * Math.cos(rad);
-                const y1 = 50 + 8 * Math.sin(rad);
-                const x2 = 50 + 36 * Math.cos(rad);
-                const y2 = 50 + 36 * Math.sin(rad);
-                return <line key={deg} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth="1.8" />;
-              })}
-            </svg>
-            <div className="summit-card glass-panel">
-              <p className="card-label">Featured Traverse</p>
-              <h2>Kanchenjunga to Humla</h2>
-              <p>
-                A long-form crossing from the far east to the Tibetan-edge west, stitched together
-                by high passes, tea-house villages, and remote camping sections.
-              </p>
-              <div className="summit-grid">
-                <div>
-                  <span>Altitude mood</span>
-                  <strong>Sea of ridgelines</strong>
-                </div>
-                <div>
-                  <span>Best pace</span>
-                  <strong>Slow expedition</strong>
-                </div>
-                <div>
-                  <span>Character</span>
-                  <strong>Wild and ceremonial</strong>
-                </div>
-                <div>
-                  <span>Ideal season</span>
-                  <strong>Oct to Nov</strong>
-                </div>
-              </div>
-            </div>
-            <div className="elevation-ring" aria-hidden="true">
-              <span>Everest</span>
-              <span>Annapurna</span>
-              <span>Dolpo</span>
-              <span>Humla</span>
-            </div>
-          </div>
         </section>
 
         {/* ── Page-scroll sub-nav ── */}
@@ -218,9 +173,13 @@ function HomePage() {
         </nav>
 
         <section className="story-section reveal" id="story">
+          <Mandala size={80} className="section-mandala" />
           <div className="section-heading">
             <p className="eyebrow">Why it matters</p>
             <h2>A trail defined by contrast rather than distance alone.</h2>
+          </div>
+          <div className="story-hero-banner reveal">
+            <img src="/images/story-trail.jpg" alt="Trekker crossing a vast mountain landscape" loading="lazy" />
           </div>
           <div className="story-grid">
             <article className="story-panel accent-panel">
@@ -287,6 +246,9 @@ function HomePage() {
                 className={`belt-card glass-panel${zone.isNepal ? " belt-card--focus" : ""}`}
                 style={{ "--zone-color": zone.color }}
               >
+                <div className="belt-card-img">
+                  <img src={zone.image} alt={zone.region} loading="lazy" />
+                </div>
                 <div className="belt-card-header">
                   <span className="belt-country">{zone.country}</span>
                   <span
@@ -322,36 +284,56 @@ function HomePage() {
           </div>
           <div className="regions-grid">
             <article className="region-card reveal">
-              <span className="region-index">01</span>
-              <h3>Eastern Frontier</h3>
-              <p>
-                Kanchenjunga and Makalu country, where giant walls rise above cardamom hills and
-                village trails feel exploratory.
-              </p>
+              <div className="region-card-img">
+                <img src="/images/region-eastern.jpg" alt="Snow-capped peaks of eastern Nepal" loading="lazy" />
+              </div>
+              <div className="region-card-body">
+                <span className="region-index">01</span>
+                <h3>Eastern Frontier</h3>
+                <p>
+                  Kanchenjunga and Makalu country, where giant walls rise above cardamom hills and
+                  village trails feel exploratory.
+                </p>
+              </div>
             </article>
             <article className="region-card reveal">
-              <span className="region-index">02</span>
-              <h3>Khumbu Heights</h3>
-              <p>
-                Ice, monasteries, suspension bridges, and a skyline crowned by Everest, Lhotse, and
-                Ama Dablam.
-              </p>
+              <div className="region-card-img">
+                <img src="/images/region-khumbu.jpg" alt="Ama Dablam peak in the Khumbu region" loading="lazy" />
+              </div>
+              <div className="region-card-body">
+                <span className="region-index">02</span>
+                <h3>Khumbu Heights</h3>
+                <p>
+                  Ice, monasteries, suspension bridges, and a skyline crowned by Everest, Lhotse, and
+                  Ama Dablam.
+                </p>
+              </div>
             </article>
             <article className="region-card reveal">
-              <span className="region-index">03</span>
-              <h3>Central Classics</h3>
-              <p>
-                Langtang, Manaslu, and Annapurna bring dramatic access to high passes, deep
-                villages, and iconic tea-house rhythm.
-              </p>
+              <div className="region-card-img">
+                <img src="/images/region-central.jpg" alt="Machapuchare and the Annapurna range" loading="lazy" />
+              </div>
+              <div className="region-card-body">
+                <span className="region-index">03</span>
+                <h3>Central Classics</h3>
+                <p>
+                  Langtang, Manaslu, and Annapurna bring dramatic access to high passes, deep
+                  villages, and iconic tea-house rhythm.
+                </p>
+              </div>
             </article>
             <article className="region-card reveal">
-              <span className="region-index">04</span>
-              <h3>Western Wilds</h3>
-              <p>
-                Dolpo, Jumla, and Humla expand into quiet plateaus, turquoise lakes, and some of
-                Nepal's most remote cultural landscapes.
-              </p>
+              <div className="region-card-img">
+                <img src="/images/region-western.jpg" alt="Remote mountain valley in western Nepal" loading="lazy" />
+              </div>
+              <div className="region-card-body">
+                <span className="region-index">04</span>
+                <h3>Western Wilds</h3>
+                <p>
+                  Dolpo, Jumla, and Humla expand into quiet plateaus, turquoise lakes, and some of
+                  Nepal's most remote cultural landscapes.
+                </p>
+              </div>
             </article>
           </div>
         </section>
@@ -365,8 +347,13 @@ function HomePage() {
           </div>
           <div className="topic-teasers-grid">
             <article className="topic-teaser-card glass-panel reveal">
-              <div className="topic-teaser-icon" aria-hidden="true">🗺</div>
-              <h3>Journeys</h3>
+              <div className="topic-teaser-img">
+                <img src="/images/teaser-journeys.jpg" alt="Autumn valley with Himalayan mountains" loading="lazy" />
+              </div>
+              <div className="topic-teaser-title-row">
+                <div className="topic-teaser-icon" aria-hidden="true"><EndlessKnot size={40} /></div>
+                <h3>Journeys</h3>
+              </div>
               <p>
                 Nine regional sections from Kanchenjunga to Humla — each with full route
                 breakdowns, altitude profiles, and stage-by-stage detail for every major trek.
@@ -376,8 +363,13 @@ function HomePage() {
               </Link>
             </article>
             <article className="topic-teaser-card glass-panel reveal">
-              <div className="topic-teaser-icon" aria-hidden="true">📋</div>
-              <h3>Plan Your Trip</h3>
+              <div className="topic-teaser-img">
+                <img src="/images/teaser-plan.jpg" alt="Mountain pass view from trail" loading="lazy" />
+              </div>
+              <div className="topic-teaser-title-row">
+                <div className="topic-teaser-icon" aria-hidden="true"><Dorje size={56} /></div>
+                <h3>Plan Your Trip</h3>
+              </div>
               <p>
                 Route lengths, season windows, permit costs, budget ranges, essential gear lists,
                 altitude protocol, and emergency planning — in one place.
@@ -387,8 +379,13 @@ function HomePage() {
               </Link>
             </article>
             <article className="topic-teaser-card glass-panel reveal">
-              <div className="topic-teaser-icon" aria-hidden="true">🏔</div>
-              <h3>Culture &amp; Environment</h3>
+              <div className="topic-teaser-img">
+                <img src="/images/teaser-culture.jpg" alt="Buddhist monastery on Himalayan mountainside" loading="lazy" />
+              </div>
+              <div className="topic-teaser-title-row">
+                <div className="topic-teaser-icon" aria-hidden="true"><Stupa size={44} /></div>
+                <h3>Culture &amp; Environment</h3>
+              </div>
               <p>
                 Eight ethnic communities, five trail festivals, eight protected areas, and the
                 wildlife and conservation principles that make responsible trekking matter.
@@ -432,7 +429,7 @@ function HomePage() {
         </section>
       </main>
 
-      <div className="lotus-divider" aria-hidden="true"><div className="lotus-divider-icon" /></div>
+      <div className="lotus-divider" aria-hidden="true"><Lotus size={56} /></div>
       <SiteFooter />
     </div>
   );

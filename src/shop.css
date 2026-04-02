@@ -207,7 +207,9 @@
 .shop-hero {
   background: linear-gradient(135deg, var(--bg-deep) 0%, var(--forest) 100%);
 }
-.shop-hero .eyebrow { color: rgba(255,255,255,0.6); }
+.shop-hero .eyebrow { color: #fff9e0; }
+.shop-hero .page-hero-inner h1 { color: #fff; }
+.shop-hero .page-hero-inner p { color: rgba(255, 255, 255, 0.75); }
 .shop-hero-title {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   margin: 0 0 0.75rem;
@@ -289,7 +291,7 @@
 .maps-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.25rem;
+  gap: 1.5rem;
   margin-bottom: 3rem;
 }
 .map-card-link {
@@ -300,16 +302,16 @@
 
 /* ── Map Product Card ──────────────────────────────── */
 .map-card {
-  border: 1px solid #e0e6e2;
+  border: 1.5px solid #e0e6e2;
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
   display: flex;
   flex-direction: column;
   height: 100%;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-.map-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.12); transform: translateY(-2px); }
+.map-card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.12); transform: translateY(-3px); }
 .map-card-header {
   padding: 1.1rem 1.25rem 0;
   display: flex;
@@ -333,7 +335,7 @@
   white-space: nowrap;
 }
 .map-card-name {
-  font-size: 0.97rem;
+  font-size: 1rem;
   font-weight: 700;
   margin: 0.5rem 1.25rem 0.4rem;
   line-height: 1.35;
@@ -373,12 +375,14 @@
 
 /* ── Bundle Card ───────────────────────────────────── */
 .bundle-card {
-  border: 2px solid var(--green);
+  border: 1.5px solid var(--green);
   border-radius: 14px;
-  padding: 1.75rem 2rem;
+  padding: 2rem;
   background: #f0f8f2;
   margin-bottom: 1.5rem;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
+.bundle-card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.12); transform: translateY(-3px); }
 .bundle-card-header {
   display: flex;
   align-items: flex-start;
@@ -401,7 +405,7 @@
 }
 .bundle-title {
   font-size: 1.2rem;
-  font-weight: 800;
+  font-weight: 700;
   margin: 0;
   color: #1a1a1a;
 }
@@ -434,13 +438,15 @@
 
 /* ── Book Card ─────────────────────────────────────── */
 .book-card {
-  border: 1px solid #e0e6e2;
+  border: 1.5px solid #e0e6e2;
   border-radius: 14px;
   padding: 2rem;
   max-width: 640px;
   background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
+.book-card:hover { box-shadow: 0 12px 32px rgba(0,0,0,0.12); transform: translateY(-3px); }
 .book-card-badge {
   display: inline-flex;
   align-items: center;
@@ -455,7 +461,7 @@
 }
 .book-card-name {
   font-size: 1.2rem;
-  font-weight: 800;
+  font-weight: 700;
   margin: 0 0 0.6rem;
   color: #1a1a1a;
   line-height: 1.35;
@@ -617,7 +623,7 @@
 .map-detail-spec { display: flex; gap: 1rem; align-items: baseline; font-size: 0.9rem; }
 .map-detail-spec-label { font-weight: 700; color: #444; min-width: 70px; }
 .map-detail-buy-card {
-  border: 1px solid #e0e6e2;
+  border: 1.5px solid #e0e6e2;
   border-radius: 14px;
   padding: 1.75rem;
   background: #fff;

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import Breadcrumb from "../components/Breadcrumb";
+import { Lotus, Dorje, EndlessKnot } from "../components/NepaliIcons";
 
 const SECTIONS = [
   { id: "experience", label: "Experience" },
@@ -135,7 +136,10 @@ export default function PlanPage() {
     <div className="page-shell">
       <SiteHeader />
       <main id="main-content">
-        <section className="page-hero">
+        <section className="page-hero plan-hero">
+          <div className="page-hero-img" aria-hidden="true">
+            <img src="/images/hero-peaks.jpg" alt="" loading="eager" />
+          </div>
           <div className="page-hero-inner reveal">
             <Breadcrumb items={[{ label: "Plan Your Trek" }]} />
             <p className="eyebrow">Preparation</p>
@@ -175,16 +179,28 @@ export default function PlanPage() {
               let the mountains set the rhythm.
             </p>
           </div>
+          <div className="experience-hero-banner reveal">
+            <img src="/images/plan-village.jpg" alt="Ghandruk village with Annapurna backdrop" loading="lazy" />
+          </div>
           <div className="experience-list">
             <article className="experience-item reveal">
+              <div className="experience-item-img">
+                <img src="/images/exp-teahouse.jpg" alt="Mountain village lodges in the Himalayas" loading="lazy" />
+              </div>
               <h3>Tea-house rhythm</h3>
               <p>Warm kitchens, dal bhat refuels, and trail days anchored by local lodges.</p>
             </article>
             <article className="experience-item reveal">
+              <div className="experience-item-img">
+                <img src="/images/exp-remote.jpg" alt="Remote mountain range with dramatic peaks" loading="lazy" />
+              </div>
               <h3>Remote camp sections</h3>
               <p>Western Nepal opens into longer, quieter stretches where logistics matter.</p>
             </article>
             <article className="experience-item reveal">
+              <div className="experience-item-img">
+                <img src="/images/exp-pass.jpg" alt="Prayer flags with snow-capped mountain pass" loading="lazy" />
+              </div>
               <h3>Pass-crossing drama</h3>
               <p>Snow lines, moraine basins, prayer flags, and weather windows shape the route.</p>
             </article>
@@ -243,6 +259,7 @@ export default function PlanPage() {
 
         <section className="safety-section" id="safety">
           <div className="section-heading reveal">
+            <Dorje size={56} className="section-icon" />
             <p className="eyebrow">Safety &amp; Difficulty</p>
             <h2>Know the terrain before you commit.</h2>
           </div>
@@ -281,7 +298,7 @@ export default function PlanPage() {
           </div>
         </section>
       </main>
-      <div className="lotus-divider" aria-hidden="true"><div className="lotus-divider-icon" /></div>
+      <div className="lotus-divider" aria-hidden="true"><Lotus size={56} /></div>
       <SiteFooter />
     </div>
   );

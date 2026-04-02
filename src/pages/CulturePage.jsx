@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import Breadcrumb from "../components/Breadcrumb";
+import { Lotus, PrayerWheel, Mandala } from "../components/NepaliIcons";
 
 const SECTIONS = [
   { id: "culture", label: "People & Culture" },
@@ -64,6 +65,13 @@ const environmentData = {
   climateImpact: "Nepal's glaciers have lost nearly a third of their ice since the 1990s. Shifting monsoon patterns affect trail seasons, glacial lakes pose GLOF risks, and high-altitude ecosystems face accelerating change. Responsible trekking minimizes footprint while supporting communities leading local conservation.",
 };
 
+const wildlifeImages = {
+  "Snow Leopard": "/images/wildlife-leopard.jpg",
+  "Red Panda": "/images/wildlife-panda.jpg",
+  "Himalayan Tahr": "/images/wildlife-tahr.jpg",
+  "Musk Deer": "/images/wildlife-deer.jpg",
+};
+
 export default function CulturePage() {
   const [activeSection, setActiveSection] = useState(SECTIONS[0].id);
   const sectionRefs = useRef({});
@@ -117,7 +125,10 @@ export default function CulturePage() {
     <div className="page-shell">
       <SiteHeader />
       <main id="main-content">
-        <section className="page-hero">
+        <section className="page-hero culture-hero">
+          <div className="page-hero-img" aria-hidden="true">
+            <img src="/images/culture-stupa.jpg" alt="" loading="eager" />
+          </div>
           <div className="page-hero-inner reveal">
             <Breadcrumb items={[{ label: "Culture & Environment" }]} />
             <p className="eyebrow">People &amp; Place</p>
@@ -149,6 +160,7 @@ export default function CulturePage() {
 
         <section className="culture-section" id="culture">
           <div className="section-heading reveal">
+            <PrayerWheel size={44} className="section-icon" />
             <p className="eyebrow">People &amp; Culture</p>
             <h2>Communities of the high routes.</h2>
           </div>
@@ -160,6 +172,9 @@ export default function CulturePage() {
                 <p>{people.note}</p>
               </article>
             ))}
+          </div>
+          <div className="culture-hero-banner reveal">
+            <img src="/images/culture-flags.jpg" alt="Prayer flags with mountain backdrop" loading="lazy" />
           </div>
           <div className="culture-lower">
             <div className="culture-festivals reveal">
@@ -191,6 +206,7 @@ export default function CulturePage() {
 
         <section className="environment-section" id="environment">
           <div className="section-heading reveal">
+            <Mandala size={48} className="section-icon" />
             <p className="eyebrow">Environment &amp; Conservation</p>
             <h2>Eight protected areas across Nepal's mountain spine.</h2>
           </div>
@@ -209,6 +225,11 @@ export default function CulturePage() {
               <div className="env-wildlife-grid">
                 {environmentData.wildlife.map((animal) => (
                   <div className="env-wildlife-card" key={animal.name}>
+                    {wildlifeImages[animal.name] && (
+                      <div className="env-wildlife-img">
+                        <img src={wildlifeImages[animal.name]} alt={animal.name} loading="lazy" />
+                      </div>
+                    )}
                     <strong>{animal.name}</strong>
                     <span className="env-wildlife-status">{animal.status}</span>
                     <p>{animal.range}</p>
@@ -225,13 +246,16 @@ export default function CulturePage() {
               </ul>
             </div>
           </div>
+          <div className="env-hero-banner reveal">
+            <img src="/images/culture-shrine.jpg" alt="Buddhist shrine nestled in the Himalayan mountains" loading="lazy" />
+          </div>
           <div className="env-climate reveal">
             <p className="eyebrow">Climate Impact</p>
             <p>{environmentData.climateImpact}</p>
           </div>
         </section>
       </main>
-      <div className="lotus-divider" aria-hidden="true"><div className="lotus-divider-icon" /></div>
+      <div className="lotus-divider" aria-hidden="true"><Lotus size={56} /></div>
       <SiteFooter />
     </div>
   );

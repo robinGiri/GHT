@@ -49,6 +49,9 @@ export default function ShopPage() {
 
       <main id="main-content" className="shop-main">
         <section className="page-hero shop-hero">
+          <div className="page-hero-img" aria-hidden="true">
+            <img src="/images/belt-nepal.jpg" alt="" />
+          </div>
           <div className="page-hero-inner">
             <Breadcrumb items={[{ label: "Shop" }]} />
             <p className="eyebrow">GHT Shop</p>

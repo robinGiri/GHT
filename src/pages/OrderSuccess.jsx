@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import Breadcrumb from "../components/Breadcrumb";
+import { Lotus } from "../components/NepaliIcons";
 
 export default function OrderSuccess() {
   const [searchParams] = useSearchParams();
@@ -69,6 +70,7 @@ export default function OrderSuccess() {
           <Link className="button button-secondary" to="/shop">Back to Shop</Link>
         </div>
       </main>
+      <div className="lotus-divider" aria-hidden="true"><Lotus size={56} /></div>
       <SiteFooter />
     </div>
   );

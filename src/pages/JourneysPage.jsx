@@ -4,12 +4,25 @@ import { scaleLinear } from "d3-scale";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import Breadcrumb from "../components/Breadcrumb";
+import { Lotus, MountainRange } from "../components/NepaliIcons";
 import { trailChunks, parseRangeToMid } from "../data/trailChunks";
 
 const regionColors = [
   "#d4832a", "#2d8a8e", "#3472a4", "#7556a0",
   "#40956d", "#3558a1", "#d4613a", "#b2793a", "#9b3b52",
 ];
+
+const journeyImages = {
+  "01": "/images/region-eastern.jpg",
+  "02": "/images/journey-makalu.jpg",
+  "03": "/images/journey-everest.jpg",
+  "04": "/images/journey-rolwaling.jpg",
+  "05": "/images/journey-langtang.jpg",
+  "06": "/images/journey-manaslu.jpg",
+  "07": "/images/region-central.jpg",
+  "08": "/images/journey-dolpo.jpg",
+  "09": "/images/journey-humla.jpg",
+};
 
 export default function JourneysPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -69,6 +82,9 @@ export default function JourneysPage() {
       <SiteHeader />
       <main id="main-content">
         <section className="page-hero">
+          <div className="page-hero-img" aria-hidden="true">
+            <img src="/images/hero-peaks.jpg" alt="" />
+          </div>
           <div className="page-hero-inner reveal">
             <Breadcrumb items={[{ label: "Journeys" }]} />
             <p className="eyebrow">East to West</p>
@@ -134,6 +150,15 @@ export default function JourneysPage() {
             className="journey-detail"
             style={{ "--accent": regionColors[parseInt(activeChunk.id, 10) - 1] }}
           >
+            {journeyImages[activeChunk.id] && (
+              <div className="journey-detail-img">
+                <img
+                  src={journeyImages[activeChunk.id]}
+                  alt={`${activeChunk.title} landscape`}
+                  loading="lazy"
+                />
+              </div>
+            )}
             <div className="journey-detail-header">
               <span className="journey-badge">{activeChunk.id}</span>
               <div className="journey-detail-titles">
@@ -225,7 +250,7 @@ export default function JourneysPage() {
           </div>
         </section>
       </main>
-      <div className="lotus-divider" aria-hidden="true"><div className="lotus-divider-icon" /></div>
+      <div className="lotus-divider" aria-hidden="true"><Lotus size={56} /></div>
       <SiteFooter />
     </div>
   );

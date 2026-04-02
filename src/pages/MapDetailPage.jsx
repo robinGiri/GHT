@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import Breadcrumb from "../components/Breadcrumb";
+import { Lotus } from "../components/NepaliIcons";
 import { useCart } from "../context/CartContext";
 import { getProductById, MAPS } from "../data/products";
 
@@ -137,6 +138,7 @@ export default function MapDetailPage() {
           })()}
         </div>
       </main>
+      <div className="lotus-divider" aria-hidden="true"><Lotus size={56} /></div>
       <SiteFooter />
     </div>
   );
