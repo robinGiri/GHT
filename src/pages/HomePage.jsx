@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
-import CartDrawer from "../components/CartDrawer";
+import SiteFooter from "../components/SiteFooter";
 
 const beltZones = [
   {
@@ -116,11 +116,9 @@ function HomePage() {
 
   return (
     <div className="page-shell">
-      <CartDrawer />
-      <a className="skip-link" href="#main">Skip to main content</a>
       <SiteHeader />
 
-      <main id="main">
+      <main id="main-content">
         <section className="hero">
           <div className="hero-copy reveal">
             <p className="eyebrow">High routes. Deep valleys. Human scale wonder.</p>
@@ -404,8 +402,8 @@ function HomePage() {
 
         <div className="prayer-flags" aria-hidden="true"><span /><span /><span /><span /><span /><span /><span /><span /><span /><span /></div>
 
-        <section className="booking-section" id="booking">
-          <div className="booking-inner reveal">
+        <section className="page-hero booking-section" id="booking">
+          <div className="page-hero-inner booking-inner reveal">
             <p className="eyebrow">For Operators &amp; Partners</p>
             <h2>Build GHT itineraries with local expertise.</h2>
             <p className="booking-desc">
@@ -435,41 +433,7 @@ function HomePage() {
       </main>
 
       <div className="lotus-divider" aria-hidden="true"><div className="lotus-divider-icon" /></div>
-      <footer className="site-footer">
-        <div className="footer-inner">
-          <div className="footer-brand">
-            <span className="stupa-icon" aria-hidden="true">
-              <span className="stupa-spire" />
-              <span className="stupa-dome" />
-              <span className="stupa-base-upper" />
-              <span className="stupa-base-lower" />
-              <span className="stupa-plinth" />
-            </span>
-            <strong>Great Himalaya Trail</strong>
-            <span>Nepal</span>
-          </div>
-          <nav className="footer-nav" aria-label="Footer">
-            <a href="#story">Story</a>
-            <a href="#regions">Regions</a>
-            <a href="#belt">The Belt</a>
-            <Link to="/journeys">Journeys</Link>
-            <Link to="/plan">Plan</Link>
-            <Link to="/culture">Culture</Link>
-            <a href="#booking">Contact</a>
-          </nav>
-          <div>
-            <div className="marigold-garland" aria-hidden="true">
-              <span /><span /><span /><span /><span />
-              <span /><span /><span /><span /><span />
-              <span /><span /><span /><span /><span />
-              <span /><span />
-            </div>
-            <p className="footer-copy">
-              1,700 km across the roofline of Nepal — from Kanchenjunga to Humla.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

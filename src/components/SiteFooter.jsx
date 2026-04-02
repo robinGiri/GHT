@@ -21,8 +21,11 @@ export default function SiteFooter() {
           <strong>Great Himalaya Trail</strong>
           <span>Nepal</span>
         </div>
-        <nav className="footer-nav" aria-label="Footer">
+        <nav className="footer-nav" aria-label="Footer navigation">
           <Link to="/">Home</Link>
+          <Link to="/journeys">Journeys</Link>
+          <Link to="/plan">Plan</Link>
+          <Link to="/culture">Culture</Link>
           <Link to="/shop">Shop</Link>
         </nav>
         <div>

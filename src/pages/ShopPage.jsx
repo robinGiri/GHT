@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import Breadcrumb from "../components/Breadcrumb";
 import MapProductCard from "../components/MapProductCard";
 import BookCard from "../components/BookCard";
 import { useCart } from "../context/CartContext";
 import { MAPS, MAP_BUNDLE, BOOK, DONATION } from "../data/products";
 
 const TABS = ["Maps", "Books", "Donate"];
+const TAB_KEY = "tab";
 
 const REGION_FILTERS = [
   { label: "All Regions", value: "all" },
@@ -18,7 +20,10 @@ const REGION_FILTERS = [
 ];
 
 export default function ShopPage() {
-  const [tab, setTab] = useState("Maps");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get(TAB_KEY);
+  const tab = TABS.find((t) => t.toLowerCase() === tabParam?.toLowerCase()) || "Maps";
+  const setTab = (t) => setSearchParams((prev) => { prev.set(TAB_KEY, t.toLowerCase()); return prev; }, { replace: true });
   const [regionFilter, setRegionFilter] = useState("all");
   const { addItem } = useCart();
   const [donationAmt, setDonationAmt] = useState(10);
@@ -42,12 +47,13 @@ export default function ShopPage() {
     <div className="page-shell">
       <SiteHeader />
 
-      <main className="shop-main">
-        <section className="shop-hero">
-          <div className="container">
+      <main id="main-content" className="shop-main">
+        <section className="page-hero shop-hero">
+          <div className="page-hero-inner">
+            <Breadcrumb items={[{ label: "Shop" }]} />
             <p className="eyebrow">GHT Shop</p>
-            <h1 className="shop-hero-title">Maps, Guides & More</h1>
-            <p className="shop-hero-desc">
+            <h1>Maps, Guides & More</h1>
+            <p>
               High-resolution digital maps and the definitive GHT trekking guide — everything you need to plan and navigate the Great Himalaya Trail.
             </p>
           </div>

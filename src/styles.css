@@ -1413,13 +1413,11 @@ section {
 
 /* ── Booking Section ── */
 .booking-section {
-  padding: 9rem 0;
+  padding: 0;
 }
 
 .booking-inner {
-  padding: 4rem 3rem;
-  border-radius: 1.2rem;
-  background: linear-gradient(160deg, rgba(26, 58, 58, 0.92), rgba(15, 43, 43, 0.96));
+  padding: 0;
   text-align: center;
 }
 
@@ -1478,8 +1476,14 @@ section {
 .page-hero {
   background: var(--bg-deep);
   padding: 7rem 0 5rem;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
+  border-radius: 1.5rem;
+  margin: 0.5rem;
 }
 
 .page-hero::after {
@@ -2320,8 +2324,8 @@ section {
     grid-template-columns: 1fr;
   }
 
-  .booking-inner {
-    padding: 2.5rem 1.5rem;
+  .booking-points {
+    grid-template-columns: 1fr;
   }
 
   .footer-inner {
@@ -2404,6 +2408,190 @@ section {
 
   section {
     padding: 4.5rem 0;
+  }
+}
+
+/* ── Skip Link ────────────────────────────────────── */
+.skip-link:focus-visible {
+  outline: 3px solid var(--forest);
+  outline-offset: 2px;
+}
+
+/* ── Screen Reader Only ───────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Mobile Nav Backdrop ──────────────────────────── */
+.nav-backdrop {
+  display: none;
+}
+
+/* ── Section Navigation (Plan, Culture pages) ─────── */
+.section-nav {
+  position: sticky;
+  top: 64px;
+  z-index: 40;
+  background: var(--panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--panel-border);
+  padding: 0;
+}
+
+.section-nav-inner {
+  display: flex;
+  gap: 0.25rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.5rem 2rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.section-nav-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.section-nav-link {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  transition: background 200ms, color 200ms;
+  white-space: nowrap;
+}
+
+.section-nav-link:hover {
+  background: rgba(45, 95, 82, 0.08);
+  color: var(--forest);
+}
+
+.section-nav-link.is-active {
+  background: var(--forest);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Breadcrumb (global) ──────────────────────────── */
+.page-hero .breadcrumb {
+  margin-bottom: 1.25rem;
+}
+
+.page-hero .breadcrumb ol {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.page-hero .breadcrumb li {
+  display: flex;
+  align-items: center;
+}
+
+.page-hero .breadcrumb li + li::before {
+  content: "/";
+  margin: 0 0.5rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.8rem;
+}
+
+.page-hero .breadcrumb a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: var(--fs-sm);
+}
+
+.page-hero .breadcrumb a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.page-hero .breadcrumb span[aria-current="page"] {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+/* ── Focus Visible (Global) ──────────────────────── */
+.site-nav a:focus-visible,
+.section-nav-link:focus-visible,
+.nav-toggle:focus-visible,
+.cart-icon-btn:focus-visible,
+.footer-nav a:focus-visible,
+.breadcrumb a:focus-visible {
+  outline: 2px solid var(--forest);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Nav Active aria-current ─────────────────────── */
+.site-nav a[aria-current="page"] {
+  font-weight: 600;
+}
+
+/* ── Page Transition ─────────────────────────────── */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-shell {
+  animation: fadeSlideIn 250ms ease-out;
+}
+
+/* ── Mobile Responsive Overrides ─────────────────── */
+@media (max-width: 768px) {
+  .nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 89;
+    background: rgba(15, 43, 43, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .section-nav {
+    top: 56px;
+  }
+
+  .section-nav-inner {
+    padding: 0.4rem 1rem;
+  }
+
+  .section-nav-link {
+    font-size: var(--fs-xs);
+    padding: 0.4rem 0.75rem;
+  }
+
+  .page-hero {
+    min-height: 260px;
+    padding: 5rem 0 3.5rem;
+    border-radius: 1rem;
+    margin: 0.35rem;
   }
 }
 

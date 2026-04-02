@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { scaleLinear } from "d3-scale";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import Breadcrumb from "../components/Breadcrumb";
 import { trailChunks, parseRangeToMid } from "../data/trailChunks";
 
 const regionColors = [
@@ -10,7 +12,10 @@ const regionColors = [
 ];
 
 export default function JourneysPage() {
-  const [activeChunkId, setActiveChunkId] = useState(trailChunks[0].id);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const chunkParam = searchParams.get("chunk");
+  const activeChunkId = trailChunks.find((c) => c.id === chunkParam)?.id || trailChunks[0].id;
+  const setActiveChunkId = (id) => setSearchParams((prev) => { prev.set("chunk", id); return prev; }, { replace: true });
 
   useEffect(() => {
     document.body.classList.add("js-enhanced");
@@ -62,9 +67,10 @@ export default function JourneysPage() {
   return (
     <div className="page-shell">
       <SiteHeader />
-      <main>
+      <main id="main-content">
         <section className="page-hero">
           <div className="page-hero-inner reveal">
+            <Breadcrumb items={[{ label: "Journeys" }]} />
             <p className="eyebrow">East to West</p>
             <h1>Nine journeys across Nepal's mountain spine.</h1>
             <p>

@@ -1,6 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import Breadcrumb from "../components/Breadcrumb";
+
+const SECTIONS = [
+  { id: "experience", label: "Experience" },
+  { id: "plan", label: "Routes" },
+  { id: "logistics", label: "Logistics" },
+  { id: "safety", label: "Safety" },
+];
 
 const logisticsData = [
   {
@@ -75,6 +83,9 @@ const safetyData = {
 };
 
 export default function PlanPage() {
+  const [activeSection, setActiveSection] = useState(SECTIONS[0].id);
+  const sectionRefs = useRef({});
+
   useEffect(() => {
     document.body.classList.add("js-enhanced");
     const observer = new IntersectionObserver(
@@ -82,7 +93,6 @@ export default function PlanPage() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
           }
         });
       },
@@ -99,12 +109,35 @@ export default function PlanPage() {
     };
   }, []);
 
+  // Section nav active tracking
+  useEffect(() => {
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: "-80px 0px -50% 0px" }
+    );
+    SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) {
+        sectionRefs.current[id] = el;
+        sectionObserver.observe(el);
+      }
+    });
+    return () => sectionObserver.disconnect();
+  }, []);
+
   return (
     <div className="page-shell">
       <SiteHeader />
-      <main>
+      <main id="main-content">
         <section className="page-hero">
           <div className="page-hero-inner reveal">
+            <Breadcrumb items={[{ label: "Plan Your Trek" }]} />
             <p className="eyebrow">Preparation</p>
             <h1>Plan your GHT journey from first idea to final day.</h1>
             <p>
@@ -113,6 +146,24 @@ export default function PlanPage() {
             </p>
           </div>
         </section>
+
+        <nav className="section-nav" aria-label="Page sections">
+          <div className="section-nav-inner">
+            {SECTIONS.map(({ id, label }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={`section-nav-link${activeSection === id ? " is-active" : ""}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+        </nav>
 
         <section className="experience-section" id="experience">
           <div className="experience-copy reveal">

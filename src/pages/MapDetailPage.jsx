@@ -1,8 +1,9 @@
 import { useParams, Link } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import Breadcrumb from "../components/Breadcrumb";
 import { useCart } from "../context/CartContext";
-import { getProductById } from "../data/products";
+import { getProductById, MAPS } from "../data/products";
 
 export default function MapDetailPage() {
   const { id } = useParams();
@@ -13,7 +14,7 @@ export default function MapDetailPage() {
     return (
       <div className="page-shell">
         <SiteHeader />
-        <main className="container" style={{ padding: "4rem 0", textAlign: "center" }}>
+        <main id="main-content" className="container" style={{ padding: "4rem 0", textAlign: "center" }}>
           <p className="eyebrow">404</p>
           <h1>Map not found</h1>
           <Link className="button button-secondary" to="/shop">Back to Shop</Link>
@@ -25,14 +26,10 @@ export default function MapDetailPage() {
   return (
     <div className="page-shell">
       <SiteHeader />
-      <main className="map-detail-main">
+      <main id="main-content" className="map-detail-main">
         <div className="container map-detail-inner">
           {/* Breadcrumb */}
-          <nav className="breadcrumb" aria-label="Breadcrumb">
-            <Link to="/shop">Shop</Link>
-            <span aria-hidden="true"> / </span>
-            <span>{product.name}</span>
-          </nav>
+          <Breadcrumb items={[{ label: "Shop", to: "/shop" }, { label: product.name }]} />
 
           <div className="map-detail-grid">
             {/* Left: info */}
@@ -114,6 +111,30 @@ export default function MapDetailPage() {
               </div>
             </aside>
           </div>
+
+          {/* Prev / Next map navigation */}
+          {(() => {
+            const idx = MAPS.findIndex((m) => m.id === product.id);
+            if (idx === -1) return null;
+            const prev = idx > 0 ? MAPS[idx - 1] : null;
+            const next = idx < MAPS.length - 1 ? MAPS[idx + 1] : null;
+            return (
+              <nav className="map-prev-next" aria-label="Adjacent maps">
+                {prev ? (
+                  <Link to={`/shop/maps/${prev.id}`} className="map-prev-next-link">
+                    <span className="map-prev-next-dir">← Previous</span>
+                    <span className="map-prev-next-name">{prev.name.replace("GHT Digital Map — ", "")}</span>
+                  </Link>
+                ) : <span />}
+                {next ? (
+                  <Link to={`/shop/maps/${next.id}`} className="map-prev-next-link map-prev-next-link--next">
+                    <span className="map-prev-next-dir">Next →</span>
+                    <span className="map-prev-next-name">{next.name.replace("GHT Digital Map — ", "")}</span>
+                  </Link>
+                ) : <span />}
+              </nav>
+            );
+          })()}
         </div>
       </main>
       <SiteFooter />

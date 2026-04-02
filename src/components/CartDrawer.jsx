@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCart } from "../context/CartContext";
 
 export default function CartDrawer() {
@@ -7,6 +7,24 @@ export default function CartDrawer() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const drawerRef = useRef(null);
+
+  // Close on Escape
+  useEffect(() => {
+    if (!drawerOpen) return;
+    function onKey(e) {
+      if (e.key === "Escape") setDrawerOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [drawerOpen, setDrawerOpen]);
+
+  // Focus the drawer when opened
+  useEffect(() => {
+    if (drawerOpen && drawerRef.current) {
+      drawerRef.current.focus();
+    }
+  }, [drawerOpen]);
 
   if (!drawerOpen) return null;
 
@@ -67,7 +85,14 @@ export default function CartDrawer() {
       />
 
       {/* Drawer */}
-      <aside className="cart-drawer" aria-label="Shopping cart" role="dialog" aria-modal="true">
+      <aside
+        ref={drawerRef}
+        className="cart-drawer"
+        aria-label="Shopping cart"
+        role="dialog"
+        aria-modal="true"
+        tabIndex={-1}
+      >
         <div className="cart-drawer-header">
           <h2 className="cart-drawer-title">Your Cart</h2>
           <button

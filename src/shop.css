@@ -206,10 +206,8 @@
 }
 .shop-hero {
   background: linear-gradient(135deg, var(--bg-deep) 0%, var(--forest) 100%);
-  color: #fff;
-  padding: 4rem 0 3rem;
 }
-.shop-hero .eyebrow { color: rgba(255,255,255,0.6); margin-bottom: 0.5rem; }
+.shop-hero .eyebrow { color: rgba(255,255,255,0.6); }
 .shop-hero-title {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   margin: 0 0 0.75rem;
@@ -554,9 +552,12 @@
 .map-detail-main { min-height: 80vh; }
 .map-detail-inner { padding: 2rem 0 5rem; }
 .breadcrumb { font-size: 0.88rem; color: #888; margin-bottom: 2rem; }
+.breadcrumb ol { display: flex; align-items: center; flex-wrap: wrap; gap: 0; list-style: none; margin: 0; padding: 0; }
+.breadcrumb li { display: flex; align-items: center; }
+.breadcrumb li + li::before { content: "/"; margin: 0 0.5rem; color: #bbb; font-size: 0.8rem; }
 .breadcrumb a { color: var(--green); text-decoration: none; }
 .breadcrumb a:hover { text-decoration: underline; }
-.breadcrumb span { margin: 0 0.4rem; }
+.breadcrumb span[aria-current="page"] { color: var(--ink); font-weight: 500; }
 .map-detail-grid {
   display: grid;
   grid-template-columns: 1fr 320px;
@@ -948,3 +949,61 @@ select.admin-badge { cursor: pointer; appearance: auto; }
 .admin-fulfillment-card ul { margin: 0 0 0.75rem 1.25rem; font-size: 0.9rem; line-height: 2; }
 .admin-ship-address { font-size: 0.88rem; color: #555; margin-bottom: 0.75rem; }
 .admin-fulfillment-actions { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+
+/* ── Map Prev/Next Navigation ─────────────────────── */
+.map-prev-next {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--panel-border);
+}
+
+.map-prev-next-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 200ms;
+  max-width: 45%;
+}
+
+.map-prev-next-link:hover {
+  background: rgba(45, 95, 82, 0.06);
+}
+
+.map-prev-next-link--next {
+  text-align: right;
+  margin-left: auto;
+}
+
+.map-prev-next-dir {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--forest);
+}
+
+.map-prev-next-name {
+  font-size: 0.95rem;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .map-prev-next {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .map-prev-next-link {
+    max-width: 100%;
+  }
+  .map-prev-next-link--next {
+    text-align: left;
+  }
+}

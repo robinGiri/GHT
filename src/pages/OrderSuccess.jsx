@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
+import Breadcrumb from "../components/Breadcrumb";
 
 export default function OrderSuccess() {
   const [searchParams] = useSearchParams();
@@ -21,8 +22,9 @@ export default function OrderSuccess() {
   return (
     <div className="page-shell">
       <SiteHeader />
-      <main className="checkout-result-main">
+      <main id="main-content" className="checkout-result-main">
         <div className="container checkout-result-inner">
+          <Breadcrumb items={[{ label: "Shop", to: "/shop" }, { label: "Order Confirmation" }]} />
           <div className="checkout-result-icon checkout-result-icon--success" aria-hidden="true">✓</div>
           <h1 className="checkout-result-title">Payment successful!</h1>
 

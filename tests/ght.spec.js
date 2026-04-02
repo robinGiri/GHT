@@ -10,14 +10,13 @@ test.describe("GHT Website — Section Verification", () => {
     await expect(page).toHaveTitle("Great Himalaya Trail Nepal");
   });
 
-  test("header nav has all 11 links", async ({ page }) => {
+  test("header nav has all 4 links", async ({ page }) => {
     const nav = page.locator("nav.site-nav");
     const links = nav.locator("a");
-    await expect(links).toHaveCount(11);
+    await expect(links).toHaveCount(4);
 
     const expectedLinks = [
-      "Story", "Regions", "Journeys", "Experience", "Plan",
-      "Logistics", "Safety", "Culture", "Environment", "Contact", "Shop",
+      "Journeys", "Plan", "Culture", "Shop",
     ];
     for (let i = 0; i < expectedLinks.length; i++) {
       await expect(links.nth(i)).toHaveText(expectedLinks[i]);
@@ -44,34 +43,42 @@ test.describe("GHT Website — Section Verification", () => {
   });
 
   test("journey viewer has 9 interactive nodes", async ({ page }) => {
+    await page.goto("/journeys");
+    await page.waitForLoadState("networkidle");
     const chunks = page.locator("#chunks");
     await expect(chunks).toBeVisible();
     await expect(chunks.locator(".journey-node")).toHaveCount(9);
   });
 
   test("clicking journey node updates detail panel", async ({ page }) => {
+    await page.goto("/journeys");
+    await page.waitForLoadState("networkidle");
     const node3 = page.locator(".journey-node").nth(2);
     await node3.click();
-    const detailTitle = page.locator(".journey-detail-titles h3");
+    const detailTitle = page.locator(".journey-detail-titles h2");
     await expect(detailTitle).toContainText("Everest");
   });
 
   test("experience section renders 3 items", async ({ page }) => {
+    await page.goto("/plan");
+    await page.waitForLoadState("networkidle");
     const exp = page.locator("#experience");
     await expect(exp).toBeVisible();
     await expect(exp.locator(".experience-item")).toHaveCount(3);
   });
 
   test("plan section has 3 cards", async ({ page }) => {
+    await page.goto("/plan");
+    await page.waitForLoadState("networkidle");
     const plan = page.locator("#plan");
     await expect(plan).toBeVisible();
     await expect(plan.locator(".plan-card")).toHaveCount(3);
   });
 });
 
-test.describe("GHT Website — New Sections", () => {
+test.describe("GHT Website — Plan Page Sections", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/plan");
     await page.waitForLoadState("networkidle");
   });
 
@@ -127,12 +134,16 @@ test.describe("GHT Website — New Sections", () => {
   });
 
   test("culture section renders 8 people cards", async ({ page }) => {
+    await page.goto("/culture");
+    await page.waitForLoadState("networkidle");
     const culture = page.locator("#culture");
     await expect(culture).toBeVisible();
     await expect(culture.locator(".culture-people-card")).toHaveCount(8);
   });
 
   test("culture section has expected ethnic groups", async ({ page }) => {
+    await page.goto("/culture");
+    await page.waitForLoadState("networkidle");
     const culture = page.locator("#culture");
     const groups = ["Sherpa", "Rai & Limbu", "Tamang", "Gurung", "Thakali", "Dolpo-pa", "Magar", "Loba"];
     for (const group of groups) {
@@ -141,6 +152,8 @@ test.describe("GHT Website — New Sections", () => {
   });
 
   test("culture section has festivals", async ({ page }) => {
+    await page.goto("/culture");
+    await page.waitForLoadState("networkidle");
     const culture = page.locator("#culture");
     await expect(culture.locator(".culture-festival-item")).toHaveCount(5);
     await expect(culture).toContainText("Dashain");
@@ -149,6 +162,8 @@ test.describe("GHT Website — New Sections", () => {
   });
 
   test("culture section has etiquette guide", async ({ page }) => {
+    await page.goto("/culture");
+    await page.waitForLoadState("networkidle");
     const culture = page.locator("#culture");
     await expect(culture.locator(".culture-etiquette")).toBeVisible();
     await expect(culture).toContainText("clockwise");
@@ -156,12 +171,16 @@ test.describe("GHT Website — New Sections", () => {
   });
 
   test("environment section renders 8 conservation areas", async ({ page }) => {
+    await page.goto("/culture");
+    await page.waitForLoadState("networkidle");
     const env = page.locator("#environment");
     await expect(env).toBeVisible();
     await expect(env.locator(".env-park-card")).toHaveCount(8);
   });
 
   test("environment section has expected parks", async ({ page }) => {
+    await page.goto("/culture");
+    await page.waitForLoadState("networkidle");
     const env = page.locator("#environment");
     const parks = [
       "Sagarmatha National Park",
@@ -176,6 +195,8 @@ test.describe("GHT Website — New Sections", () => {
   });
 
   test("environment section has wildlife cards", async ({ page }) => {
+    await page.goto("/culture");
+    await page.waitForLoadState("networkidle");
     const env = page.locator("#environment");
     await expect(env.locator(".env-wildlife-card")).toHaveCount(4);
     await expect(env).toContainText("Snow Leopard");
@@ -183,12 +204,16 @@ test.describe("GHT Website — New Sections", () => {
   });
 
   test("environment section has Leave No Trace principles", async ({ page }) => {
+    await page.goto("/culture");
+    await page.waitForLoadState("networkidle");
     const env = page.locator("#environment");
     await expect(env.locator(".env-principles")).toBeVisible();
     await expect(env).toContainText("Pack out all waste");
   });
 
   test("environment section has climate impact statement", async ({ page }) => {
+    await page.goto("/culture");
+    await page.waitForLoadState("networkidle");
     const env = page.locator("#environment");
     await expect(env.locator(".env-climate")).toBeVisible();
     await expect(env).toContainText("glaciers");
@@ -196,6 +221,8 @@ test.describe("GHT Website — New Sections", () => {
   });
 
   test("booking section renders with CTA", async ({ page }) => {
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
     const booking = page.locator("#booking");
     await expect(booking).toBeVisible();
     await expect(booking).toContainText("Build GHT itineraries");
@@ -209,6 +236,8 @@ test.describe("GHT Website — New Sections", () => {
   });
 
   test("booking section has operator selling points", async ({ page }) => {
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
     const booking = page.locator("#booking");
     await expect(booking).toContainText("Permit Handling");
     await expect(booking).toContainText("Custom Itineraries");
@@ -219,46 +248,44 @@ test.describe("GHT Website — New Sections", () => {
     const footer = page.locator("footer.site-footer");
     await expect(footer).toBeVisible();
     await expect(footer.locator(".footer-brand")).toContainText("Great Himalaya Trail");
-    await expect(footer.locator(".footer-nav a")).toHaveCount(8);
+    await expect(footer.locator(".footer-nav a")).toHaveCount(5);
     await expect(footer.locator(".footer-copy")).toContainText("1,700 km");
   });
 });
 
 test.describe("GHT Website — Navigation", () => {
-  test("nav links scroll to correct sections", async ({ page }) => {
+  test("nav links navigate to correct pages", async ({ page }) => {
     await page.goto("/");
     await page.waitForLoadState("networkidle");
 
-    const sections = [
-      { link: "Logistics", id: "logistics" },
-      { link: "Safety", id: "safety" },
-      { link: "Culture", id: "culture" },
-      { link: "Environment", id: "environment" },
-      { link: "Contact", id: "booking" },
+    const navLinks = [
+      { link: "Journeys", path: "/journeys" },
+      { link: "Plan", path: "/plan" },
+      { link: "Culture", path: "/culture" },
+      { link: "Shop", path: "/shop" },
     ];
 
-    const toggle = page.locator("button.nav-toggle");
-
-    for (const { link, id } of sections) {
-      // On mobile the nav is hidden behind the hamburger — open it first
+    for (const { link, path } of navLinks) {
+      await page.goto("/");
+      await page.waitForLoadState("networkidle");
+      const toggle = page.locator("button.nav-toggle");
       if (await toggle.isVisible()) {
         const navHidden = await page.locator("nav.site-nav").isHidden();
         if (navHidden) await toggle.click();
       }
       await page.locator(`nav.site-nav a:text("${link}")`).click();
-      await expect(page.locator(`#${id}`)).toBeAttached();
+      await expect(page).toHaveURL(new RegExp(path));
     }
   });
 });
 
 test.describe("GHT Website — Responsive Layout", () => {
-  test("mobile viewport renders all sections", async ({ page }) => {
+  test("mobile viewport renders homepage sections", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto("/");
     await page.waitForLoadState("networkidle");
 
-    // All new sections should be visible on scroll
-    for (const id of ["logistics", "safety", "culture", "environment", "booking"]) {
+    for (const id of ["story", "regions", "belt", "explore", "booking"]) {
       const section = page.locator(`#${id}`);
       await expect(section).toBeAttached();
     }
@@ -267,12 +294,12 @@ test.describe("GHT Website — Responsive Layout", () => {
     await expect(page.locator("footer.site-footer")).toBeAttached();
   });
 
-  test("tablet viewport renders all sections", async ({ page }) => {
+  test("tablet viewport renders homepage sections", async ({ page }) => {
     await page.setViewportSize({ width: 768, height: 1024 });
     await page.goto("/");
     await page.waitForLoadState("networkidle");
 
-    for (const id of ["logistics", "safety", "culture", "environment", "booking"]) {
+    for (const id of ["story", "regions", "belt", "explore", "booking"]) {
       await expect(page.locator(`#${id}`)).toBeAttached();
     }
   });
@@ -289,10 +316,12 @@ test.describe("GHT Website — Accessibility", () => {
     await expect(skipLink).toBeAttached();
     await skipLink.focus();
     await expect(skipLink).toBeFocused();
-    await expect(skipLink).toHaveAttribute("href", "#top");
+    await expect(skipLink).toHaveAttribute("href", "#main-content");
   });
 
   test("journey nodes have aria-pressed attribute", async ({ page }) => {
+    await page.goto("/journeys");
+    await page.waitForLoadState("networkidle");
     const nodes = page.locator(".journey-node");
     const count = await nodes.count();
     for (let i = 0; i < count; i++) {
@@ -304,6 +333,8 @@ test.describe("GHT Website — Accessibility", () => {
   });
 
   test("clicking a journey node updates aria-pressed", async ({ page }) => {
+    await page.goto("/journeys");
+    await page.waitForLoadState("networkidle");
     const nodes = page.locator(".journey-node");
     await nodes.nth(2).click();
     await expect(nodes.nth(2)).toHaveAttribute("aria-pressed", "true");
@@ -311,7 +342,7 @@ test.describe("GHT Website — Accessibility", () => {
   });
 
   test("primary nav has aria-label", async ({ page }) => {
-    await expect(page.locator("nav[aria-label='Primary']")).toBeAttached();
+    await expect(page.locator("nav[aria-label='Primary navigation']")).toBeAttached();
   });
 
   test("hero stats list has aria-label", async ({ page }) => {
