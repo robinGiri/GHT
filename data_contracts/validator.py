@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pandas as pd
 import yaml
 
-from .models import ColumnSchema, DataContract
+from .models import ColumnSchema, DataContract, QualityAssertion
 
 # Type-compatibility map: declared dtype -> pd.api.types checker function
 _DTYPE_CHECKERS = {
@@ -38,6 +39,37 @@ def _schema_check(df: pd.DataFrame, schema: list[ColumnSchema]) -> list[str]:
                     f"Type mismatch for column '{name}': declared '{declared_dtype}' but found dtype '{actual_dtype}'."
                 )
     return violations
+
+
+def _quality_check(
+    df: pd.DataFrame,
+    assertions: list[QualityAssertion],
+) -> pd.Series:
+    """Returns a boolean Series: True = bad record (fails at least one assertion)."""
+    bad_mask = pd.Series(False, index=df.index)
+
+    for assertion in assertions:
+        col = df[assertion.column]
+        if assertion.rule == "not_null":
+            assertion_mask = pd.isna(col)
+        elif assertion.rule == "is_numeric":
+            def _is_bad_numeric(val) -> bool:
+                if pd.isna(val):
+                    return True
+                try:
+                    num = float(val)
+                except (TypeError, ValueError):
+                    return True
+                return not math.isfinite(num)
+
+            assertion_mask = col.map(_is_bad_numeric)
+        else:
+            # Unknown rule — skip
+            assertion_mask = pd.Series(False, index=df.index)
+
+        bad_mask = bad_mask | assertion_mask
+
+    return bad_mask
 
 
 def load_contract(path: str | Path) -> DataContract:

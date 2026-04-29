@@ -40,7 +40,7 @@
   - A DataFrame missing a declared column produces a non-empty violation list naming the absent column
   - _Requirements: 2.1, 2.2, 2.3_
 
-- [ ] 3.3 (P) Implement `_quality_check()` in `validator.py`
+- [x] 3.3 (P) Implement `_quality_check()` in `validator.py`
   - For each `QualityAssertion` in the contract, build a boolean bad-record mask: `not_null` flags rows where the column is null (`pd.isna`); `is_numeric` flags rows where the value is null, non-numeric, NaN, or infinite
   - Combine per-assertion masks with logical OR so a row failing any assertion is flagged
   - Return a single boolean `pd.Series` where `True` means the row is a bad record
