@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import math
+from datetime import date, datetime
+from datetime import time as dt_time
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pandas as pd
 import yaml
 
-from .models import ColumnSchema, DataContract, QualityAssertion
+from .models import ColumnSchema, DataContract, FreshnessSLA, QualityAssertion
 
 # Type-compatibility map: declared dtype -> pd.api.types checker function
 _DTYPE_CHECKERS = {
@@ -83,3 +85,18 @@ def load_contract(path: str | Path) -> DataContract:
     with path.open("r", encoding="utf-8") as fh:
         raw = yaml.safe_load(fh)
     return DataContract.model_validate(raw)
+
+
+def _freshness_check(
+    last_refreshed: datetime,
+    sla: FreshnessSLA,
+) -> bool:
+    """Returns True if freshness SLA is violated.
+
+    The SLA deadline is today at the time specified by ``sla.by_time`` (HH:MM).
+    A violation occurs when ``last_refreshed`` is strictly after the deadline,
+    meaning the data was not available by the required time.
+    """
+    hour, minute = map(int, sla.by_time.split(":"))
+    deadline = datetime.combine(date.today(), dt_time(hour, minute))
+    return last_refreshed > deadline

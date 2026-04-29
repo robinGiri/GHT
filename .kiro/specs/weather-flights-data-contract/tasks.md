@@ -48,7 +48,7 @@
   - _Requirements: 3.1, 3.2, 3.3_
   - _Boundary: validator.py — _quality_check function_
 
-- [ ] 3.4 (P) Implement `_freshness_check()` in `validator.py`
+- [x] 3.4 (P) Implement `_freshness_check()` in `validator.py`
   - Compute today's SLA deadline by combining `date.today()` with the `by_time` field parsed as `HH:MM`
   - Return `True` (violation) when `last_refreshed` is after the deadline; return `False` when the data is fresh
   - A `last_refreshed` of 07:00 today returns `True`; a `last_refreshed` of 05:00 today returns `False`
