@@ -55,8 +55,8 @@
   - _Requirements: 5.1, 5.2_
   - _Boundary: validator.py — _freshness_check function_
 
-- [ ] 4. Validation orchestration and demo
-- [ ] 4.1 Implement `validate()` orchestrator in `validator.py`
+- [x] 4. Validation orchestration and demo
+- [x] 4.1 Implement `validate()` orchestrator in `validator.py`
   - Call `_schema_check()` first; if violations are found, raise `ValueError` with the violation messages (row-level split is undefined when columns are absent)
   - Call `_quality_check()` to get the bad-record mask; split the DataFrame into `clean_records` (mask is `False`) and `quarantine_records` (mask is `True`)
   - Call `_freshness_check()` and include the result in `ValidationResult.freshness_violation`

@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 import pandas as pd
 import yaml
 
-from .models import ColumnSchema, DataContract, FreshnessSLA, QualityAssertion
+from .models import ColumnSchema, DataContract, FreshnessSLA, QualityAssertion, ValidationResult
 
 # Type-compatibility map: declared dtype -> pd.api.types checker function
 _DTYPE_CHECKERS = {
@@ -100,3 +100,72 @@ def _freshness_check(
     hour, minute = map(int, sla.by_time.split(":"))
     deadline = datetime.combine(date.today(), dt_time(hour, minute))
     return last_refreshed > deadline
+
+
+def validate(
+    df: pd.DataFrame,
+    contract: DataContract,
+    last_refreshed: datetime,
+) -> ValidationResult:
+    """
+    Runs schema, quality, and freshness checks against df.
+    Returns a ValidationResult splitting records into clean and quarantine sets.
+    Never raises on data failures — failures are captured in violation_details.
+    Raises: ValueError if schema check fails (missing columns — row-level split is not possible)
+    """
+    # Phase 1: Schema check — must pass before row-level splitting is possible
+    schema_violations = _schema_check(df, contract.schema_)
+    if schema_violations:
+        raise ValueError(
+            "Schema validation failed; row-level split is not possible:\n"
+            + "\n".join(schema_violations)
+        )
+
+    violation_details: list[str] = []
+
+    # Phase 2: Quality check — get bad-record mask and build violation messages
+    bad_mask = _quality_check(df, contract.quality_assertions)
+
+    for idx in df.index[bad_mask]:
+        row = df.loc[idx]
+        row_messages: list[str] = []
+        for assertion in contract.quality_assertions:
+            col_val = row[assertion.column]
+            if assertion.rule == "not_null":
+                if pd.isna(col_val):
+                    row_messages.append(
+                        f"Row {idx}: {assertion.column} is null"
+                    )
+            elif assertion.rule == "is_numeric":
+                is_bad = False
+                if pd.isna(col_val):
+                    is_bad = True
+                else:
+                    try:
+                        num = float(col_val)
+                        is_bad = not math.isfinite(num)
+                    except (TypeError, ValueError):
+                        is_bad = True
+                if is_bad:
+                    row_messages.append(
+                        f"Row {idx}: {assertion.column} is not a finite numeric value"
+                    )
+        violation_details.extend(row_messages)
+
+    clean_records = df[~bad_mask].reset_index(drop=True)
+    quarantine_records = df[bad_mask].reset_index(drop=True)
+
+    # Phase 3: Freshness check
+    freshness_violated = _freshness_check(last_refreshed, contract.freshness_sla)
+    if freshness_violated:
+        violation_details.append(
+            f"Freshness SLA violated: data was last refreshed at {last_refreshed.isoformat()}, "
+            f"which is after the required deadline of {contract.freshness_sla.by_time}."
+        )
+
+    return ValidationResult(
+        clean_records=clean_records,
+        quarantine_records=quarantine_records,
+        freshness_violation=freshness_violated,
+        violation_details=violation_details,
+    )
