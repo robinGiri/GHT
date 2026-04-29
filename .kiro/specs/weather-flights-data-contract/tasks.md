@@ -33,7 +33,7 @@
   - _Requirements: 1.5_
   - _Depends: 2.1, 2.2_
 
-- [ ] 3.2 Implement `_schema_check()` in `validator.py`
+- [x] 3.2 Implement `_schema_check()` in `validator.py`
   - Verify all column names declared in `contract.schema_` are present in the DataFrame
   - For each present column, verify value type compatibility with the declared dtype using `pd.api.types` helpers
   - Return an empty list when all checks pass; return a list of human-readable violation messages describing each missing column or type mismatch
