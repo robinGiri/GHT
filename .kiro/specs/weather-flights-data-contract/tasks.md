@@ -65,7 +65,7 @@
   - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 3.4, 4.1, 4.2, 4.3, 5.1, 5.2, 5.3_
   - _Depends: 3.3, 3.4_
 
-- [ ] 4.2 Build the public API and demo script
+- [x] 4.2 Build the public API and demo script
   - Update `__init__.py` to re-export `load_contract`, `validate`, `ValidationResult`, and `DataContract`
   - Write `demo.py` that builds a mock `weather_and_flights` DataFrame containing at least one null `flight_status` row, one non-numeric `temperature` row, and several clean rows; calls `load_contract()` and `validate()`; prints the clean count, quarantine count, violation details, and freshness status
   - `python data_contracts/demo.py` completes without exceptions and prints a non-zero quarantine count and at least two violation detail messages
