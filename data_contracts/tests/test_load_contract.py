@@ -1,5 +1,8 @@
+import tempfile
+import os
 import pytest
 from pathlib import Path
+from pydantic import ValidationError
 from data_contracts.validator import load_contract
 from data_contracts.models import DataContract
 
@@ -21,3 +24,13 @@ def test_load_returns_quality_assertions():
     rules = {a.column: a.rule for a in contract.quality_assertions}
     assert rules["flight_status"] == "not_null"
     assert rules["temperature"] == "is_numeric"
+
+def test_load_invalid_structure_raises_validation_error():
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+        f.write("dataset: test\n")  # missing schema, quality_assertions, freshness_sla
+        tmp_path = f.name
+    try:
+        with pytest.raises(ValidationError):
+            load_contract(tmp_path)
+    finally:
+        os.unlink(tmp_path)

@@ -71,22 +71,22 @@
   - `python data_contracts/demo.py` completes without exceptions and prints a non-zero quarantine count and at least two violation detail messages
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 4.1, 4.2, 4.3, 5.3_
 
-- [ ] 5. Tests
-- [ ] 5.1 Unit tests for `load_contract()`
+- [x] 5. Tests
+- [x] 5.1 Unit tests for `load_contract()`
   - Test with the bundled `contract.yaml` → returns `DataContract` with correct field values
   - Test with a path that does not exist → raises `FileNotFoundError`
   - Test with a YAML string missing a required field (e.g., no `freshness_sla`) → raises `pydantic.ValidationError`
   - All three test cases pass
   - _Requirements: 1.5_
 
-- [ ] 5.2 (P) Unit tests for `_schema_check()` and `_quality_check()`
+- [x] 5.2 (P) Unit tests for `_schema_check()` and `_quality_check()`
   - `_schema_check`: conformant DataFrame returns empty list; DataFrame missing a column returns a list naming the absent column; DataFrame with wrong dtype returns a type-mismatch violation
   - `_quality_check`: DataFrame with null `flight_status` → that row flagged; DataFrame with NaN/infinite `temperature` → that row flagged; DataFrame with non-numeric string in `temperature` → that row flagged; all-clean DataFrame → all `False` mask
   - All test cases pass
   - _Requirements: 2.1, 2.2, 2.3, 3.1, 3.2, 3.3_
   - _Boundary: tests for _schema_check, _quality_check_
 
-- [ ] 5.3 (P) Unit tests for `_freshness_check()`
+- [x] 5.3 (P) Unit tests for `_freshness_check()`
   - `last_refreshed` at 05:00 today → returns `False` (fresh)
   - `last_refreshed` at 07:00 today → returns `True` (violation)
   - `last_refreshed` exactly at 06:00 today → returns `False` (at deadline, not past it)
@@ -94,7 +94,7 @@
   - _Requirements: 5.1, 5.2_
   - _Boundary: tests for _freshness_check_
 
-- [ ] 5.4 Integration tests for `validate()` end-to-end
+- [x] 5.4 Integration tests for `validate()` end-to-end
   - All-clean DataFrame with fresh data → `quarantine_count == 0`, `clean_count == len(df)`, `freshness_violation == False`
   - Mixed DataFrame (null `flight_status` + non-numeric `temperature`) → correct split counts, `violation_details` non-empty
   - DataFrame missing a required column → `ValueError` raised, no `ValidationResult` returned
