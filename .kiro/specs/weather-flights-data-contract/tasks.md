@@ -24,8 +24,8 @@
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 3.3, 3.4, 4.1, 4.2, 4.3, 5.2, 5.3_
   - _Boundary: models.py_
 
-- [ ] 3. Validation engine
-- [ ] 3.1 Implement `load_contract()` in `validator.py`
+- [x] 3. Validation engine
+- [x] 3.1 Implement `load_contract()` in `validator.py`
   - Read the YAML file from the given path using PyYAML
   - Pass the parsed dict to `DataContract.model_validate()` and return the result
   - Propagate `FileNotFoundError` unchanged; let `yaml.YAMLError` and `pydantic.ValidationError` surface to the caller without wrapping
