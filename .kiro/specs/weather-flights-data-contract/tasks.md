@@ -7,8 +7,8 @@
   - `python -c "import yaml, pydantic; print('ok')"` exits 0 and `import data_contracts` succeeds from the project root
   - _Requirements: 1.5_
 
-- [ ] 2. YAML data contract and domain models
-- [ ] 2.1 (P) Author the `contract.yaml` data contract file
+- [x] 2. YAML data contract and domain models
+- [x] 2.1 (P) Author the `contract.yaml` data contract file
   - Write the `dataset`, `schema`, `quality_assertions`, and `freshness_sla` sections per the design's YAML structure
   - Include all expected columns for `weather_and_flights` with names and dtypes
   - Declare `flight_status: not_null` and `temperature: is_numeric` quality assertions
@@ -17,7 +17,7 @@
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
   - _Boundary: contract.yaml_
 
-- [ ] 2.2 (P) Define Pydantic contract models and `ValidationResult` in `models.py`
+- [x] 2.2 (P) Define Pydantic contract models and `ValidationResult` in `models.py`
   - Implement `ColumnSchema`, `QualityAssertion`, `FreshnessSLA`, and `DataContract` Pydantic models with field aliases and `Literal` types per the design interfaces
   - Implement `ValidationResult` frozen dataclass with `clean_records`, `quarantine_records`, `freshness_violation`, `violation_details`, and `clean_count`/`quarantine_count` properties
   - `DataContract.model_validate(raw_dict)` succeeds on a valid input and raises `ValidationError` when required fields are absent or types mismatch

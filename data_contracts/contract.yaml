@@ -1,0 +1,25 @@
+dataset: weather_and_flights
+
+schema:
+  - name: flight_id
+    dtype: string
+  - name: flight_status
+    dtype: string
+  - name: temperature
+    dtype: float
+  - name: departure_airport
+    dtype: string
+  - name: arrival_airport
+    dtype: string
+  - name: departure_time
+    dtype: datetime
+
+quality_assertions:
+  - column: flight_status
+    rule: not_null
+  - column: temperature
+    rule: is_numeric
+
+freshness_sla:
+  schedule: daily
+  by_time: "06:00"
