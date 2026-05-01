@@ -1,5 +1,4 @@
 """Tests for /api/admin/* endpoints."""
-import pytest
 
 
 ADMIN_HEADERS = {"X-Admin-Key": "test-admin-key"}

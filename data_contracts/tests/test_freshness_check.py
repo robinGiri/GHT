@@ -1,5 +1,4 @@
 from datetime import datetime, date, time
-import pytest
 from data_contracts.models import FreshnessSLA
 from data_contracts.validator import _freshness_check
 

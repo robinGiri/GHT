@@ -1,6 +1,4 @@
-import math
 import pandas as pd
-import pytest
 from data_contracts.models import QualityAssertion
 from data_contracts.validator import _quality_check
 
@@ -21,7 +19,7 @@ def test_null_flight_status_flagged():
     df = pd.DataFrame({"flight_status": ["ok", None, "ok"]})
     mask = _quality_check(df, assertions)
     assert mask.sum() == 1
-    assert mask.iloc[1] is True or mask.iloc[1] == True
+    assert mask.iloc[1] is True or bool(mask.iloc[1])  # noqa: E712
 
 def test_non_numeric_temperature_flagged():
     assertions = [QualityAssertion(column="temperature", rule="is_numeric")]
@@ -46,5 +44,5 @@ def test_mixed_violations_correct_count():
     })
     mask = _quality_check(df, assertions)
     assert mask.sum() == 2
-    assert mask.iloc[1] == True  # null flight_status
-    assert mask.iloc[2] == True  # infinite temperature
+    assert bool(mask.iloc[1])  # null flight_status
+    assert bool(mask.iloc[2])  # infinite temperature

@@ -4,7 +4,6 @@ import math
 from datetime import date, datetime
 from datetime import time as dt_time
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pandas as pd
 import yaml

@@ -1,12 +1,12 @@
 import os
-from datetime import datetime, timedelta
-from typing import Optional, List
+from datetime import datetime
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Header, Query
 from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 from backend.database import get_db
 from backend.models.product import Product
-from backend.models.order import Order, OrderItem
+from backend.models.order import Order
 from backend.schemas.product import ProductCreate, ProductUpdate, ProductOut
 from backend.schemas.order import OrderOut, OrderStatusUpdate
 from backend.routes.webhook import send_email, build_digital_email
@@ -96,7 +96,7 @@ def admin_delete_product(product_id: str, db: Session = Depends(get_db)):
 
 @router.get("/admin/inventory", dependencies=[Depends(require_admin)])
 def admin_inventory(db: Session = Depends(get_db)):
-    products = db.query(Product).filter(Product.active == True).all()
+    products = db.query(Product).filter(Product.active == True).all()  # noqa: E712
     return [
         {
             "id": p.id,
@@ -210,16 +210,16 @@ def admin_dashboard(db: Session = Depends(get_db)):
 
     # Low stock products
     low_stock = db.query(Product).filter(
-        Product.active == True,
+        Product.active == True,  # noqa: E712
         Product.stock_quantity <= LOW_STOCK_THRESHOLD,
-        Product.stock_quantity != None,
+        Product.stock_quantity != None,  # noqa: E711
     ).all()
 
     # Maps without file URLs
     maps_no_url = db.query(func.count(Product.id)).filter(
-        Product.active == True,
+        Product.active == True,  # noqa: E712
         Product.type == "digital_map",
-        Product.file_url == None,
+        Product.file_url == None,  # noqa: E711
     ).scalar() or 0
 
     return {

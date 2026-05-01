@@ -8,7 +8,7 @@ from html import escape as html_escape
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from backend.database import get_db
-from backend.models.order import Order, OrderItem
+from backend.models.order import Order
 from backend.models.product import Product
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")

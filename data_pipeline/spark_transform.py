@@ -17,7 +17,7 @@ import tempfile
 
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
-from pyspark.sql.types import FloatType, StructType, StructField, StringType
+from pyspark.sql.types import FloatType
 
 
 def generate_mock_data(output_dir: str) -> tuple[str, str]:

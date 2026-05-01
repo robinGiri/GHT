@@ -16,12 +16,10 @@ Exercises components 2 → 5 in a single flow without requiring Spark/Airflow:
 from __future__ import annotations
 
 import json
-import os
 from datetime import date, datetime, time as dt_time
 from pathlib import Path
 
 import pandas as pd
-import pytest
 
 from data_contracts import load_contract, validate
 from backend.rag_pipeline import (

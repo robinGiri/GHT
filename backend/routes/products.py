@@ -35,7 +35,7 @@ def list_products(
     type: Optional[str] = Query(None, description="Filter by type: digital_map, physical_book, donation"),
     db: Session = Depends(get_db),
 ):
-    q = db.query(Product).filter(Product.active == True)
+    q = db.query(Product).filter(Product.active == True)  # noqa: E712
     if type:
         q = q.filter(Product.type == type)
     return [product_to_out(p) for p in q.order_by(Product.map_code.asc().nulls_last(), Product.name.asc()).all()]
@@ -43,7 +43,7 @@ def list_products(
 
 @router.get("/products/{product_id}", response_model=ProductOut)
 def get_product(product_id: str, db: Session = Depends(get_db)):
-    p = db.query(Product).filter(Product.id == product_id, Product.active == True).first()
+    p = db.query(Product).filter(Product.id == product_id, Product.active == True).first()  # noqa: E712
     if not p:
         raise HTTPException(status_code=404, detail="Product not found")
     return product_to_out(p)

@@ -2,9 +2,8 @@
 from __future__ import annotations
 
 import json
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
-import pytest
 
 ADMIN_HEADERS = {"X-Admin-Key": "test-admin-key"}
 
@@ -44,9 +43,6 @@ class TestMainStaticMount:
         (static_dir / "index.html").write_text("<html></html>")
 
         # Patch Path resolution so `_static_dir = ROOT/static` finds our tmp dir
-        import importlib
-        import sys
-        from pathlib import Path as _P
 
         # Make a temporary tree: tmp_path/static and tmp_path/backend/main.py
         backend_dir = tmp_path / "backend"
@@ -178,7 +174,7 @@ class TestCheckoutBundlePath:
             quantity=1, price_at_purchase=99.0,
         ))
         db_session.commit()
-        resp = client.get(f"/api/checkout/session/cs_bundle_lookup")
+        resp = client.get("/api/checkout/session/cs_bundle_lookup")
         assert resp.status_code == 200
         item = resp.json()["items"][0]
         assert "download_urls" in item
@@ -378,7 +374,6 @@ class TestValidatorEdgeCases:
 class TestDemoSysPathBranch:
     def test_demo_module_reload_when_path_present(self):
         """Importing demo.py twice exercises the `if str(_project_root) not in sys.path` skip path."""
-        import sys
         import importlib
         import data_contracts.demo as demo_mod
         # Path already inserted on first import; reloading hits the false branch.

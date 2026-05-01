@@ -31,7 +31,7 @@ def create_checkout_session(request: Request, body: CheckoutSessionCreate, db: S
     for item in body.line_items:
         if item.price <= 0 or item.quantity <= 0:
             raise HTTPException(status_code=400, detail=f"Invalid price or quantity for {item.name}")
-        product = db.query(Product).filter(Product.id == item.product_id, Product.active == True).first()
+        product = db.query(Product).filter(Product.id == item.product_id, Product.active == True).first()  # noqa: E712
         if not product:
             raise HTTPException(status_code=400, detail=f"Product not found: {item.product_id}")
         if abs(item.price - product.price) > 0.01:

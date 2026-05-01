@@ -1,4 +1,4 @@
-from data_contracts import load_contract, validate, ValidationResult, DataContract
+from data_contracts import load_contract, DataContract
 from pathlib import Path
 
 

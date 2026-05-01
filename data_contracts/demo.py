@@ -25,8 +25,6 @@ from data_contracts import load_contract, validate  # noqa: E402
 
 def build_mock_dataframe() -> pd.DataFrame:
     """Build a mock weather_and_flights DataFrame with clean, null, and non-numeric rows."""
-    now = datetime.now()
-
     data = {
         "flight_id": ["F001", "F002", "F003", "F004", "F005"],
         # Row index 2: null flight_status (triggers not_null violation)

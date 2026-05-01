@@ -1,5 +1,4 @@
 import pandas as pd
-import pytest
 from data_contracts.models import ColumnSchema
 from data_contracts.validator import _schema_check
 

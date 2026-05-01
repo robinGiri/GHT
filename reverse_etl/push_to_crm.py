@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import json
 import logging
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
@@ -278,7 +278,7 @@ def main():
     result = run_reverse_etl(leads_df, min_lead_score=80)
 
     # Step 3: Summary
-    print(f"\n[3/3] Sync Summary")
+    print("\n[3/3] Sync Summary")
     print(f"  Total leads in warehouse : {result.total_leads}")
     print(f"  Synced to CRM            : {result.synced}")
     print(f"  Failed                   : {result.failed}")
