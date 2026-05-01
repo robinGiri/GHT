@@ -10,6 +10,9 @@ import OrderSuccess from "./pages/OrderSuccess";
 import OrderCancel from "./pages/OrderCancel";
 import AdminApp from "./admin/AdminApp";
 import CartDrawer from "./components/CartDrawer";
+import ChatWidget from "./components/ChatWidget";
+import ErrorBoundary from "./components/ErrorBoundary";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -53,6 +56,7 @@ export default function App() {
         Skip to main content
       </a>
       <CartDrawer />
+      <ErrorBoundary>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/journeys" element={<JourneysPage />} />
@@ -63,7 +67,10 @@ export default function App() {
         <Route path="/checkout/success" element={<OrderSuccess />} />
         <Route path="/checkout/cancel" element={<OrderCancel />} />
         <Route path="/admin/*" element={<AdminApp />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </ErrorBoundary>
+      <ChatWidget />
     </>
   );
 }

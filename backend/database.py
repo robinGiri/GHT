@@ -1,9 +1,10 @@
 import os
+from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./ght_shop.db")
 
@@ -27,6 +28,12 @@ def get_db():
 
 
 def create_tables():
-    """Create all tables. Called on startup."""
+    """Create all tables. Uses Alembic if available, falls back to metadata.create_all."""
     from backend.models import product, order  # noqa: F401 — register models
-    Base.metadata.create_all(bind=engine)
+    try:
+        from alembic.config import Config
+        from alembic import command
+        alembic_cfg = Config(str(Path(__file__).resolve().parent.parent / "alembic.ini"))
+        command.upgrade(alembic_cfg, "head")
+    except Exception:
+        Base.metadata.create_all(bind=engine)

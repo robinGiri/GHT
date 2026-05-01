@@ -1,12 +1,14 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminProvider, useAdmin } from "../context/AdminContext";
 import AdminLogin from "./AdminLogin";
 import AdminNav from "./AdminNav";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminProducts from "./pages/AdminProducts";
-import AdminOrders from "./pages/AdminOrders";
-import AdminInventory from "./pages/AdminInventory";
-import AdminFulfillment from "./pages/AdminFulfillment";
+
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminProducts = lazy(() => import("./pages/AdminProducts"));
+const AdminOrders = lazy(() => import("./pages/AdminOrders"));
+const AdminInventory = lazy(() => import("./pages/AdminInventory"));
+const AdminFulfillment = lazy(() => import("./pages/AdminFulfillment"));
 
 function AdminGuard() {
   const { isAuthenticated } = useAdmin();
@@ -15,6 +17,7 @@ function AdminGuard() {
     <div className="admin-layout">
       <AdminNav />
       <main className="admin-content">
+        <Suspense fallback={<div className="admin-loading">Loading…</div>}>
         <Routes>
           <Route index element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
@@ -22,6 +25,7 @@ function AdminGuard() {
           <Route path="inventory" element={<AdminInventory />} />
           <Route path="fulfillment" element={<AdminFulfillment />} />
         </Routes>
+        </Suspense>
       </main>
     </div>
   );

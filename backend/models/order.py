@@ -1,11 +1,20 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Float, DateTime, Text, JSON, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, Text, JSON, ForeignKey, CheckConstraint, Index
 from sqlalchemy.orm import relationship
 from backend.database import Base
 
 
 class Order(Base):
     __tablename__ = "orders"
+    __table_args__ = (
+        CheckConstraint("total_amount >= 0", name="ck_order_total_nonneg"),
+        CheckConstraint(
+            "status IN ('pending', 'paid', 'fulfilled', 'shipped', 'cancelled')",
+            name="ck_order_status_enum",
+        ),
+        Index("ix_orders_status", "status"),
+        Index("ix_orders_created_at", "created_at"),
+    )
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     stripe_session_id = Column(String, unique=True, nullable=False, index=True)
@@ -23,6 +32,10 @@ class Order(Base):
 
 class OrderItem(Base):
     __tablename__ = "order_items"
+    __table_args__ = (
+        CheckConstraint("quantity > 0", name="ck_orderitem_qty_pos"),
+        CheckConstraint("price_at_purchase >= 0", name="ck_orderitem_price_nonneg"),
+    )
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)

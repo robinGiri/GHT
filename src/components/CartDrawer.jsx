@@ -67,6 +67,9 @@ export default function CartDrawer() {
       }
 
       const { url } = await res.json();
+      // Clear cart and redirect — use sessionStorage to survive the redirect
+      // so success page knows to clear, but cart is preserved if user hits back
+      sessionStorage.setItem("ght_checkout_pending", "1");
       clearCart();
       window.location.href = url;
     } catch (err) {
@@ -94,7 +97,14 @@ export default function CartDrawer() {
         tabIndex={-1}
       >
         <div className="cart-drawer-header">
-          <h2 className="cart-drawer-title">Your Cart</h2>
+          <h2 className="cart-drawer-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            Your Cart
+            {itemCount > 0 && <span className="cart-drawer-count">{itemCount}</span>}
+          </h2>
           <button
             className="cart-drawer-close"
             onClick={() => setDrawerOpen(false)}
@@ -109,7 +119,12 @@ export default function CartDrawer() {
 
         {items.length === 0 ? (
           <div className="cart-empty">
-            <p>Your cart is empty.</p>
+            <svg className="cart-empty-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <p className="cart-empty-title">Your cart is empty</p>
+            <p className="cart-empty-hint">Browse our trail maps and guidebooks to get started.</p>
             <button className="button button-secondary" onClick={() => setDrawerOpen(false)}>
               Browse the Shop
             </button>
@@ -125,12 +140,15 @@ export default function CartDrawer() {
                       <span className="cart-item-code">{item.mapCode}</span>
                     )}
                     <span className="cart-item-name">{item.name}</span>
-                    {item.type === "physical_book" && (
-                      <span className="cart-item-badge cart-item-badge--physical">Physical — ships worldwide</span>
-                    )}
-                    {item.type === "digital_map" && (
-                      <span className="cart-item-badge cart-item-badge--digital">Digital PDF</span>
-                    )}
+                    <div className="cart-item-meta">
+                      {item.type === "physical_book" && (
+                        <span className="cart-item-badge cart-item-badge--physical">📦 Physical</span>
+                      )}
+                      {item.type === "digital_map" && (
+                        <span className="cart-item-badge cart-item-badge--digital">📄 Digital PDF</span>
+                      )}
+                      <span className="cart-item-unit-price">${item.price.toFixed(2)} each</span>
+                    </div>
                   </div>
                   <div className="cart-item-controls">
                     <div className="cart-qty">
@@ -152,7 +170,11 @@ export default function CartDrawer() {
                       className="cart-item-remove"
                       aria-label={`Remove ${item.name}`}
                       onClick={() => removeItem(item.id)}
-                    >×</button>
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                        <polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                      </svg>
+                    </button>
                   </div>
                 </li>
               ))}
@@ -160,7 +182,7 @@ export default function CartDrawer() {
 
             {/* Subtotal */}
             <div className="cart-subtotal">
-              <span>Subtotal ({itemCount} item{itemCount !== 1 ? "s" : ""})</span>
+              <span>Subtotal <span className="cart-subtotal-count">({itemCount} item{itemCount !== 1 ? "s" : ""})</span></span>
               <strong>${subtotal.toFixed(2)}</strong>
             </div>
 
@@ -173,29 +195,34 @@ export default function CartDrawer() {
 
             {/* Customer details */}
             <div className="cart-customer">
-              <label htmlFor="cart-name">Your name</label>
-              <input
-                id="cart-name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Full name"
-                autoComplete="name"
-                required
-              />
-              <label htmlFor="cart-email">Email for delivery</label>
-              <input
-                id="cart-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                autoComplete="email"
-                required
-              />
-              <p className="cart-email-note">
-                Download links for digital maps will be sent to this address immediately after payment.
-              </p>
+              <p className="cart-customer-heading">Your details</p>
+              <div className="cart-field">
+                <label htmlFor="cart-name">Full name</label>
+                <input
+                  id="cart-name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Tenzing Norgay"
+                  autoComplete="name"
+                  required
+                />
+              </div>
+              <div className="cart-field">
+                <label htmlFor="cart-email">Email address</label>
+                <input
+                  id="cart-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  autoComplete="email"
+                  required
+                />
+                <p className="cart-email-note">
+                  🔒 Download links for digital maps will be sent here after payment.
+                </p>
+              </div>
             </div>
 
             {error && <p className="cart-error" role="alert">{error}</p>}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.env
+ght_shop.db
+*.egg-info/
+.pytest_cache/
+test-results/
+venv/
+.venv/

@@ -37,12 +37,23 @@ def product_to_out(p: Product) -> ProductOut:
 # ── Products ────────────────────────────────────────────────────────────────
 
 @router.get("/admin/products", dependencies=[Depends(require_admin)])
-def admin_list_products(db: Session = Depends(get_db)):
-    products = db.query(Product).order_by(Product.map_code.asc().nulls_last(), Product.name.asc()).all()
-    return [
-        {**product_to_out(p).model_dump(), "file_url": p.file_url}
-        for p in products
-    ]
+def admin_list_products(
+    offset: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=200),
+    db: Session = Depends(get_db),
+):
+    q = db.query(Product).order_by(Product.map_code.asc().nulls_last(), Product.name.asc())
+    total = q.count()
+    products = q.offset(offset).limit(limit).all()
+    return {
+        "total": total,
+        "offset": offset,
+        "limit": limit,
+        "items": [
+            {**product_to_out(p).model_dump(), "file_url": p.file_url}
+            for p in products
+        ],
+    }
 
 
 @router.post("/admin/products", response_model=ProductOut, dependencies=[Depends(require_admin)])
@@ -115,17 +126,24 @@ def admin_update_inventory(product_id: str, body: dict, db: Session = Depends(ge
 
 # ── Orders ────────────────────────────────────────────────────────────────
 
-@router.get("/admin/orders", response_model=List[OrderOut], dependencies=[Depends(require_admin)])
+@router.get("/admin/orders", dependencies=[Depends(require_admin)])
 def admin_list_orders(
     status: Optional[str] = Query(None),
-    limit: int = Query(50, le=200),
+    offset: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=200),
     db: Session = Depends(get_db),
 ):
     q = db.query(Order).options(joinedload(Order.items))
     if status:
         q = q.filter(Order.status == status)
-    orders = q.order_by(Order.created_at.desc()).limit(limit).all()
-    return orders
+    total = q.count()
+    orders = q.order_by(Order.created_at.desc()).offset(offset).limit(limit).all()
+    return {
+        "total": total,
+        "offset": offset,
+        "limit": limit,
+        "items": orders,
+    }
 
 
 @router.get("/admin/orders/{order_id}", response_model=OrderOut, dependencies=[Depends(require_admin)])

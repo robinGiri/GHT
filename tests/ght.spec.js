@@ -24,7 +24,7 @@ test.describe("GHT Website — Section Verification", () => {
   });
 
   test("hero section renders with stats", async ({ page }) => {
-    const hero = page.locator("section.hero");
+    const hero = page.locator("section.home-hero");
     await expect(hero).toBeVisible();
     await expect(hero.locator("h1")).toContainText("roofline of Nepal");
     await expect(hero.locator(".hero-stats li")).toHaveCount(3);

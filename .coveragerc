@@ -1,0 +1,23 @@
+[run]
+source = backend, data_contracts, data_pipeline, reverse_etl
+omit =
+    backend/migrations/*
+    backend/tests/*
+    data_contracts/tests/*
+    */conftest.py
+    */__init__.py
+    # Airflow DAG file requires the airflow runtime; covered indirectly via spark_transform
+    data_pipeline/elt_dag.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+    \.\.\.
+    # Static-mount branch only fires in production builds with /static dir
+    if _static_dir.is_dir
+show_missing = True
+skip_covered = True

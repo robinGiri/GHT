@@ -66,8 +66,8 @@ def _quality_check(
 
             assertion_mask = col.map(_is_bad_numeric)
         else:
-            # Unknown rule — skip
-            assertion_mask = pd.Series(False, index=df.index)
+            # Unknown rule — skip (defensive; Pydantic Literal restricts to known rules)
+            assertion_mask = pd.Series(False, index=df.index)  # pragma: no cover
 
         bad_mask = bad_mask | assertion_mask
 
@@ -144,7 +144,7 @@ def validate(
                     try:
                         num = float(col_val)
                         is_bad = not math.isfinite(num)
-                    except (TypeError, ValueError):
+                    except (TypeError, ValueError):  # pragma: no cover - defensive
                         is_bad = True
                 if is_bad:
                     row_messages.append(

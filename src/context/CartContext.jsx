@@ -36,17 +36,17 @@ function cartReducer(state, action) {
 
 const STORAGE_KEY = "ght_cart";
 
-export function CartProvider({ children }) {
-  const [state, dispatch] = useReducer(cartReducer, { items: [] });
-  const [drawerOpen, setDrawerOpen] = useState(false);
+function loadInitialCart() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return { items: JSON.parse(saved) };
+  } catch {}
+  return { items: [] };
+}
 
-  // Hydrate from localStorage on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) dispatch({ type: "LOAD", items: JSON.parse(saved) });
-    } catch {}
-  }, []);
+export function CartProvider({ children }) {
+  const [state, dispatch] = useReducer(cartReducer, null, loadInitialCart);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Persist on change
   useEffect(() => {

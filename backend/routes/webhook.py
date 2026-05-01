@@ -4,6 +4,7 @@ import stripe
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from html import escape as html_escape
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from backend.database import get_db
@@ -17,6 +18,8 @@ SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USER = os.getenv("SMTP_USER", "")
 SMTP_PASS = os.getenv("SMTP_PASS", "")
 FROM_EMAIL = os.getenv("FROM_EMAIL", SMTP_USER)
+
+STRIPE_MOCK = os.getenv("STRIPE_MOCK", "false").lower() in ("true", "1", "yes")
 
 router = APIRouter()
 
@@ -40,17 +43,19 @@ def send_email(to: str, subject: str, html: str):
 
 
 def build_digital_email(customer_name: str, items_with_urls: list) -> str:
+    safe_name = html_escape(customer_name or "there")
     rows = ""
     for item_name, url in items_with_urls:
+        safe_item = html_escape(item_name)
         if url:
-            rows += f'<li><strong>{item_name}</strong> — <a href="{url}">Download map</a></li>'
+            rows += f'<li><strong>{safe_item}</strong> — <a href="{html_escape(url)}">Download map</a></li>'
         else:
-            rows += f'<li><strong>{item_name}</strong> — Your map link will be sent separately by the GHT team.</li>'
+            rows += f'<li><strong>{safe_item}</strong> — Your map link will be sent separately by the GHT team.</li>'
 
     return f"""
     <html><body style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1A3A3A;">
     <h1 style="color: #2D5F52;">Your GHT Map Downloads</h1>
-    <p>Hi {customer_name or "there"},</p>
+    <p>Hi {safe_name},</p>
     <p>Thank you for your purchase! Here are your download links:</p>
     <ul>{rows}</ul>
     <p>Links are for personal use only. Please do not share or redistribute the files.</p>
@@ -61,13 +66,15 @@ def build_digital_email(customer_name: str, items_with_urls: list) -> str:
 
 
 def build_physical_email(customer_name: str, order_ref: str) -> str:
+    safe_name = html_escape(customer_name or "there")
+    safe_ref = html_escape(order_ref)
     return f"""
     <html><body style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1A3A3A;">
     <h1 style="color: #2D5F52;">Book Order Confirmed</h1>
-    <p>Hi {customer_name or "there"},</p>
+    <p>Hi {safe_name},</p>
     <p>Thank you! Your copy of <em>Nepal Trekking and the Great Himalaya Trail, 3rd Edition</em> has been ordered.</p>
     <p>We'll pack and ship it to the address you provided and send you a shipping notification.</p>
-    <p style="color: #666; font-size: 12px;">Order reference: {order_ref}</p>
+    <p style="color: #666; font-size: 12px;">Order reference: {safe_ref}</p>
     <hr/>
     <p style="color: #666; font-size: 12px;">Great Himalaya Trail Nepal — <a href="https://greathimalayatrail.com">greathimalayatrail.com</a></p>
     </body></html>
@@ -82,12 +89,14 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
     if WEBHOOK_SECRET:
         try:
             event = stripe.Webhook.construct_event(payload, sig_header, WEBHOOK_SECRET)
-        except stripe.errors.SignatureVerificationError:
+        except stripe.error.SignatureVerificationError:
             raise HTTPException(status_code=400, detail="Invalid webhook signature")
-    else:
-        # Allow unsigned events in development if no secret is configured
+    elif STRIPE_MOCK:
+        # Allow unsigned events only in mock/dev mode
         import json
         event = json.loads(payload)
+    else:
+        raise HTTPException(status_code=503, detail="Webhook secret not configured")
 
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]

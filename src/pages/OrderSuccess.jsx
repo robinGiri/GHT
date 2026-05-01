@@ -5,6 +5,23 @@ import SiteFooter from "../components/SiteFooter";
 import Breadcrumb from "../components/Breadcrumb";
 import { Lotus } from "../components/NepaliIcons";
 
+function DownloadButton({ url, label }) {
+  return (
+    <a
+      href={url}
+      className="download-btn"
+      download
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 1v10M8 11l-3-3M8 11l3-3M2 14h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+      {label}
+    </a>
+  );
+}
+
 export default function OrderSuccess() {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
@@ -19,6 +36,8 @@ export default function OrderSuccess() {
       .then((data) => { setSession(data); setLoading(false); })
       .catch(() => { setError("Could not load order details."); setLoading(false); });
   }, [sessionId]);
+
+  const digitalItems = session?.items?.filter(i => i.product_type === "digital_map") || [];
 
   return (
     <div className="page-shell">
@@ -37,15 +56,45 @@ export default function OrderSuccess() {
                 Thank you, <strong>{session.customer_name || session.customer_email}</strong>!
                 Your order has been confirmed.
               </p>
-              {session.has_digital && (
-                <div className="checkout-result-box">
-                  <h2>📧 Digital maps on their way</h2>
-                  <p>
-                    Download links for your digital maps have been sent to{" "}
-                    <strong>{session.customer_email}</strong>. Check your inbox (and spam folder).
+
+              {/* Digital downloads section */}
+              {digitalItems.length > 0 && (
+                <div className="checkout-result-box downloads-box">
+                  <h2>🗺️ Your Digital Maps</h2>
+                  <p className="downloads-subtitle">
+                    Download your maps below. Links are valid for 24 hours.
                   </p>
+                  <div className="downloads-grid">
+                    {digitalItems.map((item) =>
+                      item.download_urls ? (
+                        /* Bundle: list all maps */
+                        <div key={item.product_id} className="download-card download-card--bundle">
+                          <h3>{item.product_name}</h3>
+                          <div className="bundle-downloads">
+                            {item.download_urls.map((dl) => (
+                              <DownloadButton
+                                key={dl.map_code}
+                                url={dl.url}
+                                label={`${dl.map_code}.pdf`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        /* Single map */
+                        <div key={item.product_id} className="download-card">
+                          <h3>{item.product_name}</h3>
+                          <DownloadButton
+                            url={item.download_url}
+                            label="Download PDF Map"
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
                 </div>
               )}
+
               {session.has_physical && (
                 <div className="checkout-result-box">
                   <h2>📦 Book order received</h2>

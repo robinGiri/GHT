@@ -13,7 +13,7 @@ from pathlib import Path
 # Ensure the project root is on sys.path so `data_contracts` is importable
 # regardless of how this script is invoked.
 _project_root = Path(__file__).resolve().parent.parent
-if str(_project_root) not in sys.path:
+if str(_project_root) not in sys.path:  # pragma: no cover
     sys.path.insert(0, str(_project_root))
 
 from datetime import datetime  # noqa: E402
@@ -86,7 +86,7 @@ def main() -> None:
         print(f"\nViolation details ({len(result.violation_details)} total):")
         for detail in result.violation_details:
             print(f"  - {detail}")
-    else:
+    else:  # pragma: no cover - demo data is engineered to always produce violations
         print("\nNo violation details recorded.")
 
     print("\nClean records:")

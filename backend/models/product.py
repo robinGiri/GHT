@@ -1,10 +1,21 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, Text
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, Text, CheckConstraint, Index
 from backend.database import Base
 
 
 class Product(Base):
     __tablename__ = "products"
+    __table_args__ = (
+        CheckConstraint("price >= 0", name="ck_product_price_nonneg"),
+        CheckConstraint("stock_quantity IS NULL OR stock_quantity >= 0", name="ck_product_stock_nonneg"),
+        CheckConstraint(
+            "type IN ('digital_map', 'physical_book', 'donation', 'bundle')",
+            name="ck_product_type_enum",
+        ),
+        Index("ix_products_active", "active"),
+        Index("ix_products_type", "type"),
+        Index("ix_products_map_code", "map_code"),
+    )
 
     id = Column(String, primary_key=True)          # e.g. "NP103", "BOOK-001"
     type = Column(String, nullable=False)           # digital_map | physical_book | donation
